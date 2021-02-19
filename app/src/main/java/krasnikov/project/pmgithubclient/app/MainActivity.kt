@@ -1,7 +1,8 @@
-package krasnikov.project.pmgithubclient
+package krasnikov.project.pmgithubclient.app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import krasnikov.project.pmgithubclient.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
