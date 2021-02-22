@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PMGitHubClient</string>
+    <string name="preference_login_key">login_pref</string>
+
+    <!-- Login -->
+    <string name="btn_login">Login</string>
+    <string name="toast_login_successful">Login successful</string>
+    <string name="toast_login_error">Login error</string>
+
 </resources>

@@ -10,7 +10,7 @@ interface LoginService {
     @Headers("Accept: application/json")
     @POST("login/oauth/access_token")
     @FormUrlEncoded
-    fun getAccessToken(
+    suspend fun getAccessToken(
         @Field("client_id") clientId: String,
         @Field("client_secret") clientSecret: String,
         @Field("code") code: String,
