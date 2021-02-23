@@ -11,7 +11,6 @@ import krasnikov.project.pmgithubclient.app.navigation.Navigator
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.login.data.AuthHelper
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
-import krasnikov.project.pmgithubclient.utils.AppMultithreading
 import krasnikov.project.pmgithubclient.utils.Result
 import krasnikov.project.pmgithubclient.utils.State
 import java.lang.Exception

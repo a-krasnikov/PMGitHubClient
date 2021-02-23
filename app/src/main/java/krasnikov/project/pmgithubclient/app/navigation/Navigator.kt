@@ -18,16 +18,17 @@ object Navigator {
         }
     }
 
-    fun navigateToRepoInfo(fragmentManager: FragmentManager) {
-        fragmentManager.commit {
-            replace<RepoInfoFragment>(R.id.fragment_container)
-        }
-    }
-
     fun navigateToUserInfo(fragmentManager: FragmentManager, userProfile: UserProfile) {
         fragmentManager.commit {
             val fragment = UserInfoFragment.newInstance(userProfile)
             replace(R.id.fragment_container, fragment)
+            setReorderingAllowed(true)
+        }
+    }
+
+    fun navigateToRepoInfo(fragmentManager: FragmentManager) {
+        fragmentManager.commit {
+            replace<RepoInfoFragment>(R.id.fragment_container)
             setReorderingAllowed(true)
         }
     }
