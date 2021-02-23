@@ -6,8 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
+import krasnikov.project.pmgithubclient.app.navigation.NavEvent
+import krasnikov.project.pmgithubclient.app.navigation.Navigator
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.login.data.AuthHelper
+import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.AppMultithreading
 import krasnikov.project.pmgithubclient.utils.Result
 import krasnikov.project.pmgithubclient.utils.State
@@ -41,6 +44,9 @@ class LoginViewModel(
                     //save token
                     pref.token = "${result.data.tokenType} ${result.data.accessToken}"
                     _content.value = State.Content(Unit)
+
+                    _navigationEvent.value =
+                        NavEvent { Navigator.navigateToUserInfo(it, UserProfile.LoggedUser) }
                 }
                 //TODO Error
                 is Result.Error -> _content.value = State.Error(result.exception)
