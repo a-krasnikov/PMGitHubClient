@@ -1,6 +1,6 @@
 package krasnikov.project.pmgithubclient.app.data.exception
 
-import java.lang.Exception
+import java.io.IOException
 
-class RequestNotAuthorizedException() : Exception() {
+class RequestNotAuthorizedException() : IOException() {
 }
