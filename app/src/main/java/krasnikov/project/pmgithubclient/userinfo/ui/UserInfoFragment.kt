@@ -47,8 +47,9 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
         observeReposContent()
     }
 
-    private fun getArgUserProfile() = arguments?.getParcelable<UserProfile>(ARG_USER_PROFILE)
-        ?: throw IllegalArgumentException()
+    private fun getArgUserProfile() =
+        requireArguments().getParcelable<UserProfile>(ARG_USER_PROFILE)
+            ?: throw IllegalArgumentException()
 
     private fun setupRecycler() {
         repositoriesAdapter = RepositoriesAdapter()

@@ -1,51 +1,37 @@
-package krasnikov.project.pmgithubclient.login.ui
+package krasnikov.project.pmgithubclient.repoinfo.ui.readme
 
-import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import krasnikov.project.pmgithubclient.R
 import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
-import krasnikov.project.pmgithubclient.databinding.FragmentLoginBinding
+import krasnikov.project.pmgithubclient.databinding.FragmentReadmeBinding
 import krasnikov.project.pmgithubclient.login.data.AuthHelper
-import krasnikov.project.pmgithubclient.repoinfo.ui.RepoInfoFragment
+import krasnikov.project.pmgithubclient.login.ui.LoginViewModel
+import krasnikov.project.pmgithubclient.repoinfo.data.Test
 import krasnikov.project.pmgithubclient.utils.State
 
-class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
+class ReadMeFragment : BaseFragment<FragmentReadmeBinding, ReadMeViewModel>() {
 
-    override val viewModel by viewModels<LoginViewModel>() {
+    override val viewModel by viewModels<ReadMeViewModel>() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return LoginViewModel(AuthHelper(), SharedPref(requireContext())) as T
+                return ReadMeViewModel(Test(requireContext()).repositoryService) as T
             }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.handleOauth(requireActivity().intent)
+    override fun setupBinding() {
+        binding = FragmentReadmeBinding.inflate(layoutInflater)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        setupBtnListener()
         observeContent()
-    }
-
-    override fun setupBinding() {
-        binding = FragmentLoginBinding.inflate(layoutInflater)
-    }
-
-    private fun setupBtnListener() {
-        binding.btnLogin.setOnClickListener {
-            startGitHubLogin()
-        }
     }
 
     private fun observeContent() {
@@ -56,7 +42,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 }
                 is State.Content -> {
                     hideLoading()
-                    showToast(R.string.toast_login_successful)
+                    binding.tvText.text = it.data.content
                 }
                 is State.Error -> {
                     hideLoading()
@@ -66,8 +52,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
         }
     }
 
-    private fun startGitHubLogin() {
-        val authIntent = Intent(Intent.ACTION_VIEW, viewModel.authGitHubUrl)
-        startActivity(authIntent)
+    companion object {
+        @JvmStatic
+        fun newInstance() = ReadMeFragment()
     }
 }
