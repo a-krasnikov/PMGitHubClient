@@ -8,12 +8,13 @@ abstract class PaginationScrollListener(private val layoutManager: LinearLayoutM
 
     private var curPage = 1
     protected var isLastPage = false
+    protected var isLoadingState = false
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
 
         val lastPosition = layoutManager.findLastVisibleItemPosition()
-        if (lastPosition == layoutManager.itemCount - 1 || lastPosition == 0) {
+        if (lastPosition == layoutManager.itemCount - 1 && !isLastPage && !isLoadingState) {
             onLoadMore(++curPage)
         }
     }

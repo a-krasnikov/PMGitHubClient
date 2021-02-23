@@ -2,20 +2,15 @@ package krasnikov.project.pmgithubclient.repoinfo.data
 
 import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
 import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
 import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
-import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMeModel
-import krasnikov.project.pmgithubclient.utils.Result
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
-import java.lang.Exception
 
 class Test(private val context: Context) {
     private companion object {
@@ -43,19 +38,5 @@ class Test(private val context: Context) {
 
     val repositoryService: RepositoryService by lazy {
         retrofit.create(RepositoryService::class.java)
-    }
-
-    suspend fun getContributors(
-        owner: String,
-        repo: String,
-        page: Int
-    ): Result<List<ReadMeModel>> {
-        return withContext(Dispatchers.IO) {
-            try {
-                Result.Success(repositoryService.getContributors(owner, repo, page))
-            } catch (ex: Exception) {
-                Result.Error(ex)
-            }
-        }
     }
 }

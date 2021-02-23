@@ -1,6 +1,7 @@
 package krasnikov.project.pmgithubclient.repoinfo.data
 
 import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMeModel
+import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.User
 import retrofit2.http.*
 
 interface RepositoryService {
@@ -15,7 +16,7 @@ interface RepositoryService {
         @Path("owner") owner: String,
         @Path("repo") repo: String,
         @Query("page") page: Int,
-    ): List<ReadMeModel>
+    ): List<User>
 
     @GET("/repos/{owner}/{repo}/issues")
     suspend fun getIssues(

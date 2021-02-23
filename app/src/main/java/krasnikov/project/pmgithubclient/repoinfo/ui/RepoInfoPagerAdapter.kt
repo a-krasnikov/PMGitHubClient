@@ -19,7 +19,7 @@ class RepoInfoPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
                 ReadMeFragment.newInstance()
             }
             Page.CONTRIBUTORS -> {
-                ContributorsFragment()
+                ContributorsFragment.newInstance()
             }
             Page.ISSUES -> {
                 IssuesFragment()
