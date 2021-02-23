@@ -22,7 +22,7 @@ class RepoInfoPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
                 ContributorsFragment.newInstance()
             }
             Page.ISSUES -> {
-                IssuesFragment()
+                IssuesFragment.newInstance()
             }
         }
     }

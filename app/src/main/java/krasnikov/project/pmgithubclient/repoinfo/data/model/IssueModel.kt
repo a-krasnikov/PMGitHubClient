@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class IssueModel(
-    @SerialName("owner")
-    val owner: String
+    @SerialName("title")
+    val title: String,
+    @SerialName("body")
+    val body: String
 )
