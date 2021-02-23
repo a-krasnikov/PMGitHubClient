@@ -5,6 +5,7 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
 import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
 import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
 import krasnikov.project.pmgithubclient.userinfo.data.model.Repo
@@ -27,19 +28,20 @@ class UserInfoRepository(private val context: Context/*private val userService: 
 
     private val converterFactory: Converter.Factory by lazy {
         Json { ignoreUnknownKeys = true }
-            .asConverterFactory("application/json".toMediaType())
+                .asConverterFactory("application/json".toMediaType())
     }
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .client(
-                OkHttpClient().newBuilder()
-                    .addInterceptor(ErrorInterceptor())
-                    .build()
-            )
-            .baseUrl(HttpUrl.Builder().scheme(SCHEMA).host(HOST).build())
-            .addConverterFactory(converterFactory)
-            .build()
+                .client(
+                        OkHttpClient().newBuilder()
+                                .addInterceptor(AuthInterceptor(SharedPref(context)))
+                                .addInterceptor(ErrorInterceptor())
+                                .build()
+                )
+                .baseUrl(HttpUrl.Builder().scheme(SCHEMA).host(HOST).build())
+                .addConverterFactory(converterFactory)
+                .build()
     }
 
     private val userService: UserService by lazy {
