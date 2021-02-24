@@ -5,7 +5,6 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentContributorsBinding
@@ -36,7 +35,7 @@ class ContributorsFragment : BaseFragment<FragmentContributorsBinding, Contribut
     }
 
     private fun setupRecycler() {
-        contributorsAdapter = ContributorsAdapter(viewModel.pagedListContributors, Glide.with(this))
+        contributorsAdapter = ContributorsAdapter(viewModel.pagedListContributors)
         binding.rvContributors.adapter = contributorsAdapter
     }
 
