@@ -6,9 +6,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import krasnikov.project.pmgithubclient.R
+import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentReadmeBinding
-import krasnikov.project.pmgithubclient.repoinfo.data.Test
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 import krasnikov.project.pmgithubclient.utils.State
 
@@ -20,7 +20,7 @@ class ReadMeFragment : BaseFragment<FragmentReadmeBinding, ReadMeViewModel>() {
     override val viewModel by viewModels<ReadMeViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ReadMeViewModel(owner, repo, Test(requireContext()).repositoryService) as T
+                return ReadMeViewModel(owner, repo, AppComponent.repositoryService) as T
             }
         }
     }

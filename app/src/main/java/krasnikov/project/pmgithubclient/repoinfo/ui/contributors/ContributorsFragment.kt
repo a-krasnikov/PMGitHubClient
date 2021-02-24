@@ -6,9 +6,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentContributorsBinding
-import krasnikov.project.pmgithubclient.repoinfo.data.Test
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
 class ContributorsFragment : BaseFragment<FragmentContributorsBinding, ContributorsViewModel>() {
@@ -19,11 +19,7 @@ class ContributorsFragment : BaseFragment<FragmentContributorsBinding, Contribut
     override val viewModel by viewModels<ContributorsViewModel>() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ContributorsViewModel(
-                    owner,
-                    repo,
-                    Test(requireContext()).repositoryService
-                ) as T
+                return ContributorsViewModel(owner, repo, AppComponent.repositoryService) as T
             }
         }
     }

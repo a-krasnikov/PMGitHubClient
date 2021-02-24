@@ -3,23 +3,12 @@ package krasnikov.project.pmgithubclient.repoinfo.ui.issues
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import krasnikov.project.pmgithubclient.R
+import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
-import krasnikov.project.pmgithubclient.app.ui.base.PaginationScrollListener
-import krasnikov.project.pmgithubclient.databinding.FragmentContributorsBinding
 import krasnikov.project.pmgithubclient.databinding.FragmentIssuesBinding
-import krasnikov.project.pmgithubclient.repoinfo.data.Test
-import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.ContributorsAdapter
-import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.ContributorsFragment
-import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
-import krasnikov.project.pmgithubclient.userinfo.ui.UserInfoFragment
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
-import krasnikov.project.pmgithubclient.utils.State
-import java.lang.IllegalArgumentException
 
 class IssuesFragment : BaseFragment<FragmentIssuesBinding, IssuesViewModel>() {
 
@@ -29,7 +18,7 @@ class IssuesFragment : BaseFragment<FragmentIssuesBinding, IssuesViewModel>() {
     override val viewModel by viewModels<IssuesViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return IssuesViewModel(owner, repo, Test(requireContext()).repositoryService) as T
+                return IssuesViewModel(owner, repo, AppComponent.repositoryService) as T
             }
         }
     }
