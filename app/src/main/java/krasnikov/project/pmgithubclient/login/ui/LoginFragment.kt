@@ -60,6 +60,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 }
                 is State.Error -> {
                     hideLoading()
+                    //showToast(it.error.stringRes)
                     showToast(R.string.toast_login_error)
                 }
             }
