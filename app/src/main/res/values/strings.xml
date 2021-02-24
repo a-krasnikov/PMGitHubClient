@@ -7,8 +7,10 @@
     <string name="toast_login_successful">Login successful</string>
     <string name="toast_login_error">Login error</string>
 
+    <!-- RepoInfo -->
     <string name="title_readme">Readme</string>
     <string name="title_contributors">Contributors</string>
     <string name="title_issues">Issues</string>
+    <string name="text_issue_number">#%d</string>
 
 </resources>
