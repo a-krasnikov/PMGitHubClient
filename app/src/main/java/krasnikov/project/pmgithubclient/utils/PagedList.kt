@@ -3,7 +3,7 @@ package krasnikov.project.pmgithubclient.utils
 abstract class PagedList<T> {
 
     private val internalMutableList = mutableListOf<T>()
-    private var currentPage: Int = 1
+    private var currentPage: Int = 0
 
     val size
         get() = internalMutableList.size

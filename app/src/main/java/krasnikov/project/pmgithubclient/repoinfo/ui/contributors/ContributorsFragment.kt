@@ -5,24 +5,25 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.coroutines.launch
-import krasnikov.project.pmgithubclient.R
+import com.bumptech.glide.Glide
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
-import krasnikov.project.pmgithubclient.app.ui.base.PaginationScrollListener
 import krasnikov.project.pmgithubclient.databinding.FragmentContributorsBinding
 import krasnikov.project.pmgithubclient.repoinfo.data.Test
-import krasnikov.project.pmgithubclient.repoinfo.ui.readme.ReadMeViewModel
-import krasnikov.project.pmgithubclient.utils.Result
-import krasnikov.project.pmgithubclient.utils.State
+import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
 class ContributorsFragment : BaseFragment<FragmentContributorsBinding, ContributorsViewModel>() {
+
+    private var owner by FragmentArgsDelegate<String>(ARG_OWNER)
+    private var repo by FragmentArgsDelegate<String>(ARG_REPO)
 
     override val viewModel by viewModels<ContributorsViewModel>() {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return ContributorsViewModel(Test(requireContext()).repositoryService) as T
+                return ContributorsViewModel(
+                    owner,
+                    repo,
+                    Test(requireContext()).repositoryService
+                ) as T
             }
         }
     }
@@ -35,44 +36,23 @@ class ContributorsFragment : BaseFragment<FragmentContributorsBinding, Contribut
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupRecycler()
-        observeContent()
     }
 
     private fun setupRecycler() {
-        contributorsAdapter = ContributorsAdapter()
-        with(binding.rvContributors) {
-            adapter = contributorsAdapter
-            addOnScrollListener(object :
-                PaginationScrollListener(layoutManager as LinearLayoutManager) {
-                override fun onLoadMore(page: Int) {
-                    viewModel.loadContributors(page)
-                }
-            })
-        }
-    }
-
-    private fun observeContent() {
-        viewModel.content.observe(viewLifecycleOwner) {
-            when (it) {
-                is State.Loading -> {
-                    showLoading()
-                }
-                is State.Content -> {
-                    hideLoading()
-                    contributorsAdapter.addItems(it.data)
-                }
-                is State.Error -> {
-                    hideLoading()
-                    showToast(R.string.toast_login_error)
-                }
-            }
-        }
+        contributorsAdapter = ContributorsAdapter(viewModel.pagedListContributors, Glide.with(this))
+        binding.rvContributors.adapter = contributorsAdapter
     }
 
     companion object {
+        private const val ARG_OWNER = "owner"
+        private const val ARG_REPO = "repo"
+
         @JvmStatic
-        fun newInstance() = ContributorsFragment()
+        fun newInstance(owner: String, repo: String) =
+            ContributorsFragment().apply {
+                this.owner = owner
+                this.repo = repo
+            }
     }
 }

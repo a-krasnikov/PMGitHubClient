@@ -27,7 +27,7 @@ class Test(private val context: Context) {
         Retrofit.Builder()
             .client(
                 OkHttpClient().newBuilder()
-                    .addInterceptor(AuthInterceptor(SharedPref(context)))
+                    //.addInterceptor(AuthInterceptor(SharedPref(context)))
                     .addInterceptor(ErrorInterceptor())
                     .build()
             )

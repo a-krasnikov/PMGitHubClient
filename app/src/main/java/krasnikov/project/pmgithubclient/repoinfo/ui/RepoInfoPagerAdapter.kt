@@ -19,7 +19,7 @@ class RepoInfoPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
                 ReadMeFragment.newInstance("android", "architecture-components-samples")
             }
             Page.CONTRIBUTORS -> {
-                ContributorsFragment.newInstance()
+                ContributorsFragment.newInstance("android", "architecture-components-samples")
             }
             Page.ISSUES -> {
                 IssuesFragment.newInstance("android", "architecture-components-samples")

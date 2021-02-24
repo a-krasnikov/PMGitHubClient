@@ -1,39 +1,48 @@
 package krasnikov.project.pmgithubclient.repoinfo.ui.contributors
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.RequestManager
 import krasnikov.project.pmgithubclient.R
+import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
+import krasnikov.project.pmgithubclient.databinding.RecyclerItemContributorBinding
+import krasnikov.project.pmgithubclient.repoinfo.data.model.Contributor
+import krasnikov.project.pmgithubclient.utils.PagedList
 
-class ContributorsAdapter : RecyclerView.Adapter<ContributorsAdapter.ContributorViewHolder>() {
-
-    private val items = mutableSetOf<User>()
+class ContributorsAdapter(
+    pagedList: PagedList<Contributor>,
+    private val glideRequestManager: RequestManager
+) : PagedListAdapter<Contributor, ContributorsAdapter.ContributorViewHolder>(pagedList) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContributorViewHolder {
         return ContributorViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_item_contributor, parent, false)
+            RecyclerItemContributorBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
     }
 
     override fun onBindViewHolder(holder: ContributorViewHolder, position: Int) {
-        holder.bind(items.elementAt(position))
+        holder.bind(items[position])
+        super.onBindViewHolder(holder, position)
     }
 
-    override fun getItemCount(): Int = items.size
+    inner class ContributorViewHolder(private val binding: RecyclerItemContributorBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private val resources = itemView.resources
 
-    fun addItems(items: List<User>) {
-        val oldCount = itemCount
-        this.items.addAll(items)
-        notifyItemRangeInserted(oldCount, itemCount - oldCount)
-    }
-
-    class ContributorViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        fun bind(contributor: User) {
-            itemView.findViewById<AppCompatTextView>(R.id.tvName).text = contributor.login
+        fun bind(contributor: Contributor) {
+            with(binding) {
+                glideRequestManager.load(contributor.avatarUrl).circleCrop().into(ivAvatar)
+                tvLogin.text = contributor.login
+                tvContributions.text = resources.getString(
+                    R.string.text_contributions_number,
+                    contributor.contributions
+                )
+            }
         }
     }
 }

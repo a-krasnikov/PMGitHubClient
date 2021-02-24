@@ -12,5 +12,6 @@
     <string name="title_contributors">Contributors</string>
     <string name="title_issues">Issues</string>
     <string name="text_issue_number">#%d</string>
+    <string name="text_contributions_number">Contributions: %d</string>
 
 </resources>
