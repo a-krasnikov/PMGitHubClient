@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import krasnikov.project.pmgithubclient.R
 import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
 import krasnikov.project.pmgithubclient.databinding.RecyclerItemIssueBinding
-import krasnikov.project.pmgithubclient.repoinfo.data.IssueDiffCallback
 import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
 import krasnikov.project.pmgithubclient.utils.PagedList
 

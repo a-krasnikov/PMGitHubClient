@@ -16,13 +16,13 @@ class RepoInfoPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) 
     override fun createFragment(position: Int): Fragment {
         return when (Page.values()[position]) {
             Page.README -> {
-                ReadMeFragment.newInstance()
+                ReadMeFragment.newInstance("android", "architecture-components-samples")
             }
             Page.CONTRIBUTORS -> {
                 ContributorsFragment.newInstance()
             }
             Page.ISSUES -> {
-                IssuesFragment.newInstance()
+                IssuesFragment.newInstance("android", "architecture-components-samples")
             }
         }
     }

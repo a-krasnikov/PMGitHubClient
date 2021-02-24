@@ -1,7 +1,7 @@
 package krasnikov.project.pmgithubclient.repoinfo.data
 
 import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
-import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMeModel
+import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMe
 import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.User
 import retrofit2.http.*
 
@@ -10,7 +10,7 @@ interface RepositoryService {
     suspend fun getReadMe(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
-    ): ReadMeModel
+    ): ReadMe
 
     @GET("/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(

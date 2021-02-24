@@ -8,7 +8,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.repoinfo.data.RepositoryService
-import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMeModel
 import krasnikov.project.pmgithubclient.utils.State
 import java.lang.Exception
 
