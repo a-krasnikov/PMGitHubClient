@@ -8,17 +8,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.repoinfo.data.RepositoryService
-import krasnikov.project.pmgithubclient.repoinfo.data.Test
-import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMeModel
-import krasnikov.project.pmgithubclient.utils.Result
+import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMe
 import krasnikov.project.pmgithubclient.utils.State
 import java.lang.Exception
 
-class ReadMeViewModel(private val repositoryService: RepositoryService) : BaseViewModel() {
+class ReadMeViewModel(
+    private val owner: String,
+    private val repo: String,
+    private val repositoryService: RepositoryService
+) : BaseViewModel() {
 
-    private val _content = MutableLiveData<State<ReadMeModel, Exception>>()
+    private val _content = MutableLiveData<State<ReadMe, Exception>>()
     val content
-        get() = _content as LiveData<State<ReadMeModel, Exception>>
+        get() = _content as LiveData<State<ReadMe, Exception>>
 
     init {
         loadReadme()
@@ -29,11 +31,7 @@ class ReadMeViewModel(private val repositoryService: RepositoryService) : BaseVi
             _content.value = State.Loading
             withContext(Dispatchers.IO) {
                 try {
-                    _content.postValue(
-                        State.Content(
-                            repositoryService.getReadMe("octocat", "hello-world")
-                        )
-                    )
+                    _content.postValue(State.Content(repositoryService.getReadMe(owner, repo)))
                 } catch (ex: Exception) {
                     //TODO Error
                     _content.postValue(State.Error(ex))

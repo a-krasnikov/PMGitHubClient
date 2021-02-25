@@ -28,7 +28,9 @@ object Navigator {
 
     fun navigateToRepoInfo(fragmentManager: FragmentManager) {
         fragmentManager.commit {
-            replace<RepoInfoFragment>(R.id.fragment_container)
+            val fragment =
+                RepoInfoFragment.newInstance("android", "architecture-components-samples")
+            replace(R.id.fragment_container, fragment)
             setReorderingAllowed(true)
         }
     }

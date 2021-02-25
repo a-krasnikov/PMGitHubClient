@@ -5,22 +5,20 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import krasnikov.project.pmgithubclient.R
+import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
-import krasnikov.project.pmgithubclient.app.ui.base.PaginationScrollListener
-import krasnikov.project.pmgithubclient.databinding.FragmentContributorsBinding
 import krasnikov.project.pmgithubclient.databinding.FragmentIssuesBinding
-import krasnikov.project.pmgithubclient.repoinfo.data.Test
-import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.ContributorsAdapter
-import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.ContributorsFragment
-import krasnikov.project.pmgithubclient.utils.State
+import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
 class IssuesFragment : BaseFragment<FragmentIssuesBinding, IssuesViewModel>() {
+
+    private var owner by FragmentArgsDelegate<String>(ARG_OWNER)
+    private var repo by FragmentArgsDelegate<String>(ARG_REPO)
+
     override val viewModel by viewModels<IssuesViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return IssuesViewModel(Test(requireContext()).repositoryService) as T
+                return IssuesViewModel(owner, repo, AppComponent.repositoryService) as T
             }
         }
     }
@@ -35,42 +33,24 @@ class IssuesFragment : BaseFragment<FragmentIssuesBinding, IssuesViewModel>() {
         super.onViewCreated(view, savedInstanceState)
 
         setupRecycler()
-        observeContent()
     }
 
     private fun setupRecycler() {
-        issuesAdapter = IssuesAdapter()
+        issuesAdapter = IssuesAdapter(viewModel.pagedListIssue)
         with(binding.rvIssues) {
             adapter = issuesAdapter
-            addOnScrollListener(object :
-                PaginationScrollListener(layoutManager as LinearLayoutManager) {
-                override fun onLoadMore(page: Int) {
-                    viewModel.loadIssues(page)
-                }
-            })
-        }
-    }
-
-    private fun observeContent() {
-        viewModel.content.observe(viewLifecycleOwner) {
-            when (it) {
-                is State.Loading -> {
-                    showLoading()
-                }
-                is State.Content -> {
-                    hideLoading()
-                    issuesAdapter.addItems(it.data)
-                }
-                is State.Error -> {
-                    hideLoading()
-                    showToast(R.string.toast_login_error)
-                }
-            }
         }
     }
 
     companion object {
+        private const val ARG_OWNER = "owner"
+        private const val ARG_REPO = "repo"
+
         @JvmStatic
-        fun newInstance() = IssuesFragment()
+        fun newInstance(owner: String, repo: String) =
+            IssuesFragment().apply {
+                this.owner = owner
+                this.repo = repo
+            }
     }
 }

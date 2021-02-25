@@ -4,9 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class IssueModel(
-    @SerialName("title")
-    val title: String,
-    @SerialName("body")
-    val body: String
+data class ReadMe(
+    @SerialName("content")
+    val content: String
 )

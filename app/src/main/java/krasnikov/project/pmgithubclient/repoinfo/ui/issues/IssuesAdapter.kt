@@ -1,40 +1,42 @@
 package krasnikov.project.pmgithubclient.repoinfo.ui.issues
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import krasnikov.project.pmgithubclient.R
-import krasnikov.project.pmgithubclient.repoinfo.data.model.IssueModel
+import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
+import krasnikov.project.pmgithubclient.databinding.RecyclerItemIssueBinding
+import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
+import krasnikov.project.pmgithubclient.utils.PagedList
 
-class IssuesAdapter : RecyclerView.Adapter<IssuesAdapter.IssueViewHolder>() {
-
-    private val items = mutableSetOf<IssueModel>()
+class IssuesAdapter(pagedList: PagedList<Issue>) :
+    PagedListAdapter<Issue, IssuesAdapter.IssueViewHolder>(pagedList) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IssueViewHolder {
         return IssueViewHolder(
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.recycler_item_contributor, parent, false)
+            RecyclerItemIssueBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
         )
     }
 
     override fun onBindViewHolder(holder: IssueViewHolder, position: Int) {
-        holder.bind(items.elementAt(position))
+        holder.bind(items[position])
+        super.onBindViewHolder(holder, position)
     }
 
-    override fun getItemCount(): Int = items.size
+    class IssueViewHolder(private val binding: RecyclerItemIssueBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        private val resources = itemView.resources
 
-    fun addItems(items: List<IssueModel>) {
-        val oldCount = itemCount
-        this.items.addAll(items)
-        notifyItemRangeInserted(oldCount, itemCount - oldCount)
-    }
-
-    class IssueViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        fun bind(contributor: IssueModel) {
-            itemView.findViewById<AppCompatTextView>(R.id.tvName).text = contributor.title
+        fun bind(issue: Issue) {
+            with(binding) {
+                tvTitle.text = issue.title
+                tvNumber.text = resources.getString(R.string.text_issue_number, issue.number)
+                tvBody.text = issue.body
+            }
         }
     }
 }

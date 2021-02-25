@@ -4,7 +4,11 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ReadMeModel(
-    @SerialName("content")
-    val content: String
+data class Issue(
+    @SerialName("number")
+    val number: Int,
+    @SerialName("title")
+    val title: String,
+    @SerialName("body")
+    val body: String
 )

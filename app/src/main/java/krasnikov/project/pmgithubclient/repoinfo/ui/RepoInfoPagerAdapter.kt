@@ -9,20 +9,24 @@ import krasnikov.project.pmgithubclient.repoinfo.ui.issues.IssuesFragment
 import krasnikov.project.pmgithubclient.repoinfo.ui.readme.ReadMeFragment
 import java.lang.IllegalArgumentException
 
-class RepoInfoPagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+class RepoInfoPagerAdapter(
+    fragment: Fragment,
+    private val owner: String,
+    private val repo: String
+) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount() = Page.values().size
 
     override fun createFragment(position: Int): Fragment {
         return when (Page.values()[position]) {
             Page.README -> {
-                ReadMeFragment.newInstance()
+                ReadMeFragment.newInstance(owner, repo)
             }
             Page.CONTRIBUTORS -> {
-                ContributorsFragment.newInstance()
+                ContributorsFragment.newInstance(owner, repo)
             }
             Page.ISSUES -> {
-                IssuesFragment.newInstance()
+                IssuesFragment.newInstance(owner, repo)
             }
         }
     }

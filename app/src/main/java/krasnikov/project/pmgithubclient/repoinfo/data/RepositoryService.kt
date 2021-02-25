@@ -1,8 +1,8 @@
 package krasnikov.project.pmgithubclient.repoinfo.data
 
-import krasnikov.project.pmgithubclient.repoinfo.data.model.IssueModel
-import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMeModel
-import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.User
+import krasnikov.project.pmgithubclient.repoinfo.data.model.Contributor
+import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
+import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMe
 import retrofit2.http.*
 
 interface RepositoryService {
@@ -10,19 +10,19 @@ interface RepositoryService {
     suspend fun getReadMe(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
-    ): ReadMeModel
+    ): ReadMe
 
     @GET("/repos/{owner}/{repo}/contributors")
     suspend fun getContributors(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
         @Query("page") page: Int,
-    ): List<User>
+    ): List<Contributor>
 
     @GET("/repos/{owner}/{repo}/issues")
     suspend fun getIssues(
         @Path("owner") owner: String,
         @Path("repo") repo: String,
         @Query("page") page: Int,
-    ): List<IssueModel>
+    ): List<Issue>
 }
