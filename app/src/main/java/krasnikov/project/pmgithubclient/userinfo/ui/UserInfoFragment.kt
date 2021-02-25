@@ -69,6 +69,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
                     binding.tvName.text = it.toString()
                 }
                 is State.Error -> {
+                    //showToast(it.error.stringRes)
                 }
             }
         }
@@ -85,6 +86,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
                     repositoriesAdapter.addItems(it.data)
                 }
                 is State.Error -> {
+                    //showToast(it.error.stringRes)
                 }
             }
         }
