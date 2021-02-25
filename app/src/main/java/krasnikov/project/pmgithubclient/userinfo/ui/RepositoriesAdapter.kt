@@ -11,6 +11,8 @@ import krasnikov.project.pmgithubclient.utils.PagedList
 class RepositoriesAdapter(pagedList: PagedList<Repo>) :
     PagedListAdapter<Repo, RepositoriesAdapter.RepoViewHolder>(pagedList) {
 
+    var onItemClickListener: (repo: Repo) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
         return RepoViewHolder(
             RecyclerItemRepoBinding.inflate(
@@ -22,8 +24,11 @@ class RepositoriesAdapter(pagedList: PagedList<Repo>) :
     }
 
     override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        holder.bind(items[position])
         super.onBindViewHolder(holder, position)
+        holder.bind(items[position])
+        holder.itemView.setOnClickListener {
+            onItemClickListener(items[position])
+        }
     }
 
     class RepoViewHolder(private val binding: RecyclerItemRepoBinding) :

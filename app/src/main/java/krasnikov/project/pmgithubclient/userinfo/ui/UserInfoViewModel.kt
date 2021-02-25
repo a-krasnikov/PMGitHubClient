@@ -31,13 +31,6 @@ class UserInfoViewModel(
         loadUserInfo()
     }
 
-    private fun navigateToLogin() {
-        _navigationEvent.value = NavEvent {
-            Navigator.navigateToLogin(it)
-        }
-    }
-
-
     private fun loadUserInfo() {
         viewModelScope.launch {
             _contentUser.value = State.Loading
@@ -74,6 +67,18 @@ class UserInfoViewModel(
                 }
                 callback(result)
             }
+        }
+    }
+
+    fun onRepoClick(repo: Repo) {
+        _navigationEvent.value = NavEvent {
+            Navigator.navigateToRepoInfo(it)
+        }
+    }
+
+    private fun navigateToLogin() {
+        _navigationEvent.value = NavEvent {
+            Navigator.navigateToLogin(it)
         }
     }
 }

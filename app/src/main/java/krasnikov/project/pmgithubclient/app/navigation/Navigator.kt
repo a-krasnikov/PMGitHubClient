@@ -13,7 +13,7 @@ import krasnikov.project.pmgithubclient.userinfo.ui.UserInfoFragment
 object Navigator {
     fun navigateToLogin(fragmentManager: FragmentManager) {
         fragmentManager.commit {
-            add<LoginFragment>(R.id.fragment_container)
+            replace<LoginFragment>(R.id.fragment_container)
             setReorderingAllowed(true)
         }
     }

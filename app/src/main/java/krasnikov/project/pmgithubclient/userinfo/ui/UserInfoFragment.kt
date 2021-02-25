@@ -5,23 +5,43 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
+import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
+import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
 import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentUserInfoBinding
 import krasnikov.project.pmgithubclient.userinfo.data.UserInfoRepository
+import krasnikov.project.pmgithubclient.userinfo.data.UserService
 import krasnikov.project.pmgithubclient.userinfo.data.model.Repo
 import krasnikov.project.pmgithubclient.userinfo.data.model.User
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.*
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
 
 class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel>() {
+
+    private val retrofit: Retrofit by lazy {
+        Retrofit.Builder()
+            .client(
+                OkHttpClient().newBuilder()
+                    .addInterceptor(AuthInterceptor(SharedPref(requireContext())))
+                    .addInterceptor(ErrorInterceptor())
+                    .build()
+            )
+            .baseUrl(HttpUrl.Builder().scheme(AppComponent.SCHEMA).host(AppComponent.HOST).build())
+            .addConverterFactory(AppComponent.converterFactory)
+            .build()
+    }
 
     private var userProfile by FragmentArgsDelegate<UserProfile>(ARG_USER_PROFILE)
 
     override val viewModel by viewModels<UserInfoViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                val repository = UserInfoRepository(AppComponent.userService)
+                val repository = UserInfoRepository(retrofit.create(UserService::class.java))
                 return UserInfoViewModel(
                     userProfile,
                     repository
@@ -66,7 +86,10 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     }
 
     private fun showUserRepos(repos: PagedList<Repo>) {
-        binding.rvRepo.adapter = RepositoriesAdapter(repos)
+        val adapter = RepositoriesAdapter(repos).apply {
+            onItemClickListener = { viewModel.onRepoClick(it) }
+        }
+        binding.rvRepo.adapter = adapter
     }
 
     companion object {

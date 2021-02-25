@@ -18,7 +18,7 @@ object AppComponent {
     const val SCHEMA = "https"
     const val HOST = "api.github.com"
 
-    private val converterFactory: Converter.Factory by lazy {
+    val converterFactory: Converter.Factory by lazy {
         Json { ignoreUnknownKeys = true }
             .asConverterFactory("application/json".toMediaType())
     }
