@@ -2,12 +2,14 @@ package krasnikov.project.pmgithubclient.issueinfo.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentIssueInfoBinding
+import krasnikov.project.pmgithubclient.issueinfo.data.model.Comment
 import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
@@ -39,7 +41,11 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
     }
 
     private fun setupRecycler() {
-        commentAdapter = CommentsAdapter(viewModel.pagedCommentList)
+        commentAdapter = CommentsAdapter(viewModel.pagedCommentList).apply {
+            onItemClickListener = { comment ->
+                openReactionDialog(comment)
+            }
+        }
         binding.rvComments.adapter = commentAdapter
     }
 
@@ -47,6 +53,14 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
         with(binding) {
             tvName.text = issue.title
             tvBody.text = issue.body
+        }
+    }
+
+    private fun openReactionDialog(comment: Comment) {
+
+        parentFragmentManager.commit {
+            add(ReactionsDialogFragment.newInstance(commentId = comment.id),
+                    ReactionsDialogFragment.TAG)
         }
     }
 

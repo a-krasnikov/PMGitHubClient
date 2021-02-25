@@ -10,6 +10,8 @@ import krasnikov.project.pmgithubclient.utils.PagedList
 
 class CommentsAdapter(pagedList: PagedList<Comment>) : PagedListAdapter<Comment, CommentsAdapter.CommentViewHolder>(pagedList) {
 
+    var onItemClickListener: (comment: Comment) -> Unit = {}
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
         return CommentViewHolder(
                 RecycleItemCommentBinding.inflate(
@@ -25,9 +27,13 @@ class CommentsAdapter(pagedList: PagedList<Comment>) : PagedListAdapter<Comment,
         super.onBindViewHolder(holder, position)
     }
 
-    class CommentViewHolder(private val binding: RecycleItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CommentViewHolder(private val binding: RecycleItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(comment: Comment) {
-
+            binding.tvUser.text = comment.user.login
+            binding.tvBody.text = comment.body
+            binding.root.setOnClickListener {
+                onItemClickListener(comment)
+            }
         }
     }
 

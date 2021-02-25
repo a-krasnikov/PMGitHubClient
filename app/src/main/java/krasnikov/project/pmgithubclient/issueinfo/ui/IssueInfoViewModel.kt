@@ -8,6 +8,8 @@ import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.issueinfo.data.IssueService
 import krasnikov.project.pmgithubclient.issueinfo.data.model.Comment
+import krasnikov.project.pmgithubclient.issueinfo.data.model.Reaction
+import krasnikov.project.pmgithubclient.issueinfo.data.model.ReactionType
 import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
 import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.Result
@@ -40,5 +42,18 @@ class IssueInfoViewModel(
         return withContext(Dispatchers.IO) {
             issueService.getIssueComments(owner, repo, issue.number, page)
         }
+    }
+
+    suspend fun getCommentReactions(commentId: Int): List<Reaction> {
+        return withContext(Dispatchers.IO) {
+            issueService.getIssueCommentReactions(owner, repo, commentId)
+        }
+    }
+
+    suspend fun createCommentReaction(commentId: Int, reaction: ReactionType): List<Reaction> {
+        withContext(Dispatchers.IO) {
+            issueService.createIssueCommentReaction(owner, repo, commentId, reaction.content)
+        }
+        return getCommentReactions(commentId)
     }
 }

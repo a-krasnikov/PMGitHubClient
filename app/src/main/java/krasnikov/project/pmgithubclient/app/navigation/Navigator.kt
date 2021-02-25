@@ -5,7 +5,9 @@ import androidx.fragment.app.add
 import androidx.fragment.app.commit
 import androidx.fragment.app.replace
 import krasnikov.project.pmgithubclient.R
+import krasnikov.project.pmgithubclient.issueinfo.ui.IssueInfoFragment
 import krasnikov.project.pmgithubclient.login.ui.LoginFragment
+import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
 import krasnikov.project.pmgithubclient.repoinfo.ui.RepoInfoFragment
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.userinfo.ui.UserInfoFragment
@@ -30,6 +32,15 @@ object Navigator {
         fragmentManager.commit {
             val fragment =
                 RepoInfoFragment.newInstance("android", "architecture-components-samples")
+            replace(R.id.fragment_container, fragment)
+            setReorderingAllowed(true)
+        }
+    }
+
+    fun navigateToIssueInfo(fragmentManager: FragmentManager, owner: String, repo: String, issue: Issue) {
+        fragmentManager.commit {
+            val fragment =
+                    IssueInfoFragment.newInstance(owner, repo, issue)
             replace(R.id.fragment_container, fragment)
             setReorderingAllowed(true)
         }
