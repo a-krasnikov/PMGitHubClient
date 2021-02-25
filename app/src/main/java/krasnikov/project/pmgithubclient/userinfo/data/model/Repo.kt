@@ -6,5 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Repo(
     @SerialName("name")
-    val name: String
+    val name: String,
+    @SerialName("description")
+    val description: String?
 )

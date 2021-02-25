@@ -2,8 +2,11 @@ package krasnikov.project.pmgithubclient.app.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
+import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
 import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
+import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
 import krasnikov.project.pmgithubclient.repoinfo.data.RepositoryService
+import krasnikov.project.pmgithubclient.userinfo.data.UserService
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -37,4 +40,7 @@ object AppComponent {
         retrofit.create(RepositoryService::class.java)
     }
 
+    val userService: UserService by lazy {
+        retrofit.create(UserService::class.java)
+    }
 }

@@ -11,29 +11,24 @@ import krasnikov.project.pmgithubclient.app.navigation.Navigator
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.userinfo.data.UserInfoRepository
 import krasnikov.project.pmgithubclient.userinfo.data.model.Repo
-import krasnikov.project.pmgithubclient.userinfo.data.model.User
+import krasnikov.project.pmgithubclient.userinfo.data.model.UserInfoModel
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.ErrorType
+import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.Result
 import krasnikov.project.pmgithubclient.utils.State
-import java.lang.Exception
 
 class UserInfoViewModel(
     private val userProfile: UserProfile,
     private val repository: UserInfoRepository
 ) : BaseViewModel() {
 
-    private val _contentUser = MutableLiveData<State<User, ErrorType>>()
+    private val _contentUser = MutableLiveData<State<UserInfoModel, ErrorType>>()
     val contentUser
-        get() = _contentUser as LiveData<State<User, ErrorType>>
-
-    private val _contentRepos = MutableLiveData<State<List<Repo>, ErrorType>>()
-    val contentRepos
-        get() = _contentRepos as LiveData<State<List<Repo>, ErrorType>>
+        get() = _contentUser as LiveData<State<UserInfoModel, ErrorType>>
 
     init {
         loadUserInfo()
-        loadUserRepos(1)
     }
 
     private fun navigateToLogin() {
@@ -46,12 +41,13 @@ class UserInfoViewModel(
     private fun loadUserInfo() {
         viewModelScope.launch {
             _contentUser.value = State.Loading
-            when (val result = repository.getUser(userProfile)) {
+            when (val userResult = repository.getUser(userProfile)) {
                 is Result.Success -> {
-                    _contentUser.value = State.Content(result.data)
+                    _contentUser.value =
+                        State.Content(UserInfoModel(userResult.data, loadRepos()))
                 }
                 is Result.Error -> {
-                    when (result.exception) {
+                    when (userResult.exception) {
                         is RequestNotAuthorizedException -> {
                             navigateToLogin()
                         }
@@ -67,26 +63,16 @@ class UserInfoViewModel(
         }
     }
 
-    fun loadUserRepos(page: Int) {
-        viewModelScope.launch {
-            _contentUser.value = State.Loading
-            when (val result = repository.getUserRepos(userProfile, page)) {
-                is Result.Success -> {
-                    _contentRepos.value = State.Content(result.data)
+    private fun loadRepos() = object : PagedList<Repo>() {
+        override fun loadNextData(page: Int, callback: (Result<List<Repo>>) -> Unit) {
+            viewModelScope.launch {
+                val result = try {
+                    repository.getUserRepos(userProfile, page)
+                } catch (ex: Exception) {
+                    //TODO Error
+                    Result.Error(ex)
                 }
-                is Result.Error -> {
-                    when (result.exception) {
-                        is RequestNotAuthorizedException -> {
-                            navigateToLogin()
-                        }
-                        is NetworkRequestException -> {
-                            _contentRepos.value = State.Error(ErrorType.ReposNotLoadedError)
-                        }
-                        else -> {
-                            _contentRepos.value = State.Error(ErrorType.UnknownError)
-                        }
-                    }
-                }
+                callback(result)
             }
         }
     }

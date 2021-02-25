@@ -1,38 +1,39 @@
 package krasnikov.project.pmgithubclient.userinfo.ui
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
-import krasnikov.project.pmgithubclient.R
+import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
+import krasnikov.project.pmgithubclient.databinding.RecyclerItemRepoBinding
 import krasnikov.project.pmgithubclient.userinfo.data.model.Repo
+import krasnikov.project.pmgithubclient.utils.PagedList
 
-class RepositoriesAdapter : RecyclerView.Adapter<RepositoriesAdapter.RepositoryViewHolder>() {
+class RepositoriesAdapter(pagedList: PagedList<Repo>) :
+    PagedListAdapter<Repo, RepositoriesAdapter.RepoViewHolder>(pagedList) {
 
-    private val items = mutableSetOf<Repo>()
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepositoryViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.recycler_item_repo, parent, false)
-        return RepositoryViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
+        return RepoViewHolder(
+            RecyclerItemRepoBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
-    override fun onBindViewHolder(holder: RepositoryViewHolder, position: Int) {
-        holder.bind(items.elementAt(position))
+    override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
+        holder.bind(items[position])
+        super.onBindViewHolder(holder, position)
     }
 
-    override fun getItemCount(): Int = items.size
-
-    fun addItems(items: List<Repo>) {
-        this.items.addAll(items)
-        notifyDataSetChanged()
-    }
-
-    class RepositoryViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class RepoViewHolder(private val binding: RecyclerItemRepoBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(repo: Repo) {
-            itemView.findViewById<AppCompatTextView>(R.id.tvTitle).text = repo.name
+            with(binding) {
+                tvTitle.text = repo.name
+                tvDescription.text = repo.description
+            }
         }
     }
 }
