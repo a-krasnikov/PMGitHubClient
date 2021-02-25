@@ -6,6 +6,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
 import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentIssueInfoBinding
@@ -24,7 +25,7 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
     override val viewModel by viewModels<IssueInfoViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return IssueInfoViewModel(owner, repo, issue, AppComponent.issueService) as T
+                return IssueInfoViewModel(owner, repo, issue, AppComponent.issueService, SharedPref(context!!)) as T
             }
         }
     }
@@ -58,7 +59,7 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
 
     private fun openReactionDialog(comment: Comment) {
 
-        parentFragmentManager.commit {
+        childFragmentManager.commit {
             add(ReactionsDialogFragment.newInstance(commentId = comment.id),
                     ReactionsDialogFragment.TAG)
         }

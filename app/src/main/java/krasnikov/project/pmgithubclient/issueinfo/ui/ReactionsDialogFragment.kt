@@ -6,19 +6,31 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
+import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
+import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.databinding.DialogFragmentCommentReactionBinding
+import krasnikov.project.pmgithubclient.issueinfo.data.IssueService
 import krasnikov.project.pmgithubclient.issueinfo.data.model.ReactionType
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
+import okhttp3.HttpUrl
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
 
 class ReactionsDialogFragment : DialogFragment() {
     private var commentId by FragmentArgsDelegate<Int>(ARG_ID)
 
-    private val viewModel: IssueInfoViewModel by activityViewModels()
+    private val viewModel: IssueInfoViewModel by viewModels(
+            ownerProducer = {requireParentFragment()}
+    )
     lateinit var binding: DialogFragmentCommentReactionBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DialogFragmentCommentReactionBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,6 +62,7 @@ class ReactionsDialogFragment : DialogFragment() {
             createReaction(ReactionType.MinusOne)
         }
     }
+
 
     companion object {
         private const val ARG_ID = "ARG_ID"

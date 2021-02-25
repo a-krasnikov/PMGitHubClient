@@ -1,6 +1,12 @@
 package krasnikov.project.pmgithubclient.issueinfo.data.model
 
-import krasnikov.project.pmgithubclient.userinfo.data.model.User
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import krasnikov.project.pmgithubclient.repoinfo.data.model.CommentUser
 
-data class Comment(val id: Int, val body: String, val user: User) {
+@Serializable
+data class Comment(
+        @SerialName("id") val id: Int,
+        @SerialName("body") val body: String,
+        @SerialName("user") val user: CommentUser) {
 }
