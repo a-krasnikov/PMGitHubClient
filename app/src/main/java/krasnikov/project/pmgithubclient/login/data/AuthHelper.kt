@@ -14,8 +14,9 @@ import okhttp3.OkHttpClient
 import retrofit2.Converter
 import retrofit2.Retrofit
 import java.lang.Exception
+import javax.inject.Inject
 
-class AuthHelper {
+class AuthHelper @Inject constructor(private val loginService: LoginService) {
 
     private companion object {
         const val SCHEMA = "https"
@@ -27,27 +28,6 @@ class AuthHelper {
 
         const val OAUTH2_PATH = "login/oauth/authorize"
         const val OAUTH2_SCOPE = "user,repo"
-    }
-
-    private val converterFactory: Converter.Factory by lazy {
-        Json { ignoreUnknownKeys = true }
-            .asConverterFactory("application/json".toMediaType())
-    }
-
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .client(
-                OkHttpClient().newBuilder()
-                    .addInterceptor(ErrorInterceptor())
-                    .build()
-            )
-            .baseUrl(HttpUrl.Builder().scheme(SCHEMA).host(HOST).build())
-            .addConverterFactory(converterFactory)
-            .build()
-    }
-
-    private val loginService: LoginService by lazy {
-        retrofit.create(LoginService::class.java)
     }
 
     val authGitHubUrl: Uri

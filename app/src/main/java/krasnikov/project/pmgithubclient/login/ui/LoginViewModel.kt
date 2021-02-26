@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import krasnikov.project.pmgithubclient.app.data.exception.NetworkRequestException
 import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
@@ -16,8 +17,10 @@ import krasnikov.project.pmgithubclient.utils.ErrorType
 import krasnikov.project.pmgithubclient.utils.Result
 import krasnikov.project.pmgithubclient.utils.State
 import java.lang.Exception
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
         private val authHelper: AuthHelper,
         private val pref: SharedPref
 ) : BaseViewModel() {

@@ -4,8 +4,9 @@ import krasnikov.project.pmgithubclient.app.data.exception.NetworkRequestExcepti
 import krasnikov.project.pmgithubclient.app.data.exception.RequestNotAuthorizedException
 import okhttp3.Interceptor
 import okhttp3.Response
+import javax.inject.Inject
 
-class ErrorInterceptor : Interceptor {
+class ErrorInterceptor @Inject constructor() : Interceptor {
     private companion object {
         const val HTTP_NOT_AUTHORIZED = 401
     }

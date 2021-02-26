@@ -3,6 +3,7 @@ package krasnikov.project.pmgithubclient.repo.info.ui.readme
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -11,10 +12,10 @@ import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
 import krasnikov.project.pmgithubclient.repo.info.data.model.ReadMe
 import krasnikov.project.pmgithubclient.utils.State
 import java.lang.Exception
+import javax.inject.Inject
 
-class ReadMeViewModel(
-    private val owner: String,
-    private val repo: String,
+@HiltViewModel
+class ReadMeViewModel @Inject constructor(
     private val repositoryService: RepositoryService
 ) : BaseViewModel() {
 
@@ -22,11 +23,8 @@ class ReadMeViewModel(
     val content
         get() = _content as LiveData<State<ReadMe, Exception>>
 
-    init {
-        loadReadme()
-    }
 
-    private fun loadReadme() {
+    fun loadReadme(owner: String, repo: String) {
         viewModelScope.launch {
             _content.value = State.Loading
             withContext(Dispatchers.IO) {

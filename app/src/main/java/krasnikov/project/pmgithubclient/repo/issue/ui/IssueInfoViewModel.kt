@@ -3,6 +3,7 @@ package krasnikov.project.pmgithubclient.repo.issue.ui
 
 import androidx.lifecycle.viewModelScope
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,21 +25,23 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import java.lang.Exception
+import javax.inject.Inject
 
-class IssueInfoViewModel(
-        private val owner: String,
-        private val repo: String,
-        private val issue: Issue,
-        private val issueService: IssueService,
-        private val sharedPrefs: SharedPref
+@HiltViewModel
+class IssueInfoViewModel @Inject constructor(
+    private val owner: String,
+    private val repo: String,
+    private val issueService: IssueService
 ) : BaseViewModel() {
 
-    val pagedCommentList by lazy {
+    fun getIssueComments(owner: String, repo: String, issue: Issue) =
         object : PagedList<Comment>() {
             override fun loadNextData(page: Int, callback: (Result<List<Comment>>) -> Unit) {
                 viewModelScope.launch() {
                     val comments = try {
-                        Result.Success(getIssueComments(page))
+                        Result.Success(withContext(Dispatchers.IO) {
+                            issueService.getIssueComments(owner, repo, issue.number, page)
+                        })
                     } catch (exception: Exception) {
                         Result.Error(exception)
                     }
@@ -47,37 +50,24 @@ class IssueInfoViewModel(
             }
 
         }
-    }
 
-    suspend fun getIssueComments(page: Int): List<Comment> {
+
+    suspend fun getCommentReactions(owner: String, repo: String, commentId: Int): List<Reaction> {
         return withContext(Dispatchers.IO) {
-            issueService.getIssueComments(owner, repo, issue.number, page)
+            issueService.getIssueCommentReactions(owner, repo, commentId)
         }
     }
 
-    suspend fun getCommentReactions(commentId: Int): List<Reaction> {
-        return withContext(Dispatchers.IO) {
-            service.getIssueCommentReactions(owner, repo, commentId)
-        }
-    }
-
-    suspend fun createCommentReaction(commentId: Int, reaction: ReactionType): List<Reaction> {
+    suspend fun createCommentReaction(
+        owner: String,
+        repo: String,
+        commentId: Int,
+        reaction: ReactionType
+    ): List<Reaction> {
         withContext(Dispatchers.IO) {
-            service.createIssueCommentReaction(owner, repo, commentId, reaction.content)
+            issueService.createIssueCommentReaction(owner, repo, commentId, reaction.content)
         }
-        return getCommentReactions(commentId)
+        return getCommentReactions(owner, repo, commentId)
     }
 
-    private val service =
-            Retrofit.Builder()
-                    .client(
-                            OkHttpClient().newBuilder()
-                                    .addInterceptor(AuthInterceptor(sharedPrefs))
-                                    .addInterceptor(ErrorInterceptor())
-                                    .build()
-                    )
-                    .baseUrl(HttpUrl.Builder().scheme(AppComponent.SCHEMA).host(AppComponent.HOST).build())
-                    .addConverterFactory(Json { ignoreUnknownKeys = true }
-                            .asConverterFactory("application/json".toMediaType()))
-                    .build().create(IssueService::class.java)
 }
