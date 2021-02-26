@@ -10,5 +10,5 @@ data class User(
     @SerialName("avatar_url")
     val avatarUrl: String,
     @SerialName("name")
-    val name: String,
+    val name: String = "",
 )
