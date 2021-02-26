@@ -12,8 +12,15 @@ import androidx.lifecycle.ViewModelProvider
 import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentSearchBinding
+import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.ContributorsFragment
+import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
+import krasnikov.project.pmgithubclient.userinfo.ui.UserInfoFragment
+import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
+
+    private var initQuery by FragmentArgsDelegate<String>(ARG_SEARCH_QUERY)
+
     override val viewModel by viewModels<SearchViewModel> {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -31,6 +38,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
         (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         setupSearchToolbar()
         observeContentSearch()
+        setupInitQuery()
     }
 
     private fun setupSearchToolbar() {
@@ -55,6 +63,11 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
         }
     }
 
+    private fun setupInitQuery() {
+        binding.toolbar.etQuery.setText(initQuery)
+        searchUser()
+    }
+
     private fun observeContentSearch() {
         viewModel.contentSearch.observe(viewLifecycleOwner) {
             binding.rvSearch.adapter = UsersAdapter(it)
@@ -68,5 +81,15 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
                 .hideSoftInputFromWindow(this.windowToken, 0)
             viewModel.searchUser(text.toString())
         }
+    }
+
+    companion object {
+        private const val ARG_SEARCH_QUERY = "search_query"
+
+        @JvmStatic
+        fun newInstance(query: String) =
+            SearchFragment().apply {
+                initQuery = query
+            }
     }
 }
