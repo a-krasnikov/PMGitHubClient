@@ -14,4 +14,7 @@
     <string name="text_issue_number">#%d</string>
     <string name="text_contributions_number">Contributions: %d</string>
 
+    <!-- Search -->
+    <string name="hint_search">User name</string>
+
 </resources>

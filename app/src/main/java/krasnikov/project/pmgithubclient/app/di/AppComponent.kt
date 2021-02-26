@@ -5,6 +5,7 @@ import kotlinx.serialization.json.Json
 import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
 import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
 import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
+import krasnikov.project.pmgithubclient.search.data.SearchService
 import krasnikov.project.pmgithubclient.userinfo.data.UserService
 import krasnikov.project.pmgithubclient.repo.issue.data.IssueService
 import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
@@ -45,6 +46,10 @@ object AppComponent {
         retrofit.create(UserService::class.java)
     }
 
+    val searchService: SearchService by lazy {
+        retrofit.create(SearchService::class.java)
+    }
+  
     val issueService: IssueService by lazy {
         retrofit.create(IssueService::class.java)
     }
