@@ -1,12 +1,12 @@
-package krasnikov.project.pmgithubclient.repoinfo.ui.contributors
+package krasnikov.project.pmgithubclient.repo.info.ui.contributors
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
-import krasnikov.project.pmgithubclient.repoinfo.data.RepositoryService
-import krasnikov.project.pmgithubclient.repoinfo.data.model.Contributor
+import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
+import krasnikov.project.pmgithubclient.repo.info.data.model.Contributor
 import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.Result
 import java.lang.Exception

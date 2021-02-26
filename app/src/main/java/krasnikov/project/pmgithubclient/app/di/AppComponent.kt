@@ -5,8 +5,9 @@ import kotlinx.serialization.json.Json
 import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
 import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
 import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
-import krasnikov.project.pmgithubclient.repoinfo.data.RepositoryService
 import krasnikov.project.pmgithubclient.userinfo.data.UserService
+import krasnikov.project.pmgithubclient.repo.issue.data.IssueService
+import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -42,5 +43,9 @@ object AppComponent {
 
     val userService: UserService by lazy {
         retrofit.create(UserService::class.java)
+    }
+
+    val issueService: IssueService by lazy {
+        retrofit.create(IssueService::class.java)
     }
 }

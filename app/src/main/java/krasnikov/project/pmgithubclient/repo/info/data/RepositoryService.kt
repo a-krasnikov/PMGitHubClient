@@ -1,8 +1,8 @@
-package krasnikov.project.pmgithubclient.repoinfo.data
+package krasnikov.project.pmgithubclient.repo.info.data
 
-import krasnikov.project.pmgithubclient.repoinfo.data.model.Contributor
-import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
-import krasnikov.project.pmgithubclient.repoinfo.data.model.ReadMe
+import krasnikov.project.pmgithubclient.repo.info.data.model.Contributor
+import krasnikov.project.pmgithubclient.repo.info.data.model.Issue
+import krasnikov.project.pmgithubclient.repo.info.data.model.ReadMe
 import retrofit2.http.*
 
 interface RepositoryService {

@@ -1,4 +1,4 @@
-package krasnikov.project.pmgithubclient.repoinfo.data.model
+package krasnikov.project.pmgithubclient.repo.info.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

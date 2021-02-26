@@ -1,4 +1,4 @@
-package krasnikov.project.pmgithubclient.repoinfo.ui.issues
+package krasnikov.project.pmgithubclient.repo.info.ui.issues
 
 import android.os.Bundle
 import android.view.View

@@ -1,4 +1,4 @@
-package krasnikov.project.pmgithubclient.repoinfo.ui.issues
+package krasnikov.project.pmgithubclient.repo.info.ui.issues
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import krasnikov.project.pmgithubclient.R
 import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
 import krasnikov.project.pmgithubclient.databinding.RecyclerItemIssueBinding
-import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
+import krasnikov.project.pmgithubclient.repo.info.data.model.Issue
 import krasnikov.project.pmgithubclient.utils.PagedList
 
 class IssuesAdapter(pagedList: PagedList<Issue>) :
