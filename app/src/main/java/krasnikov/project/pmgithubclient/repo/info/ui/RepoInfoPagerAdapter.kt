@@ -1,13 +1,12 @@
-package krasnikov.project.pmgithubclient.repoinfo.ui
+package krasnikov.project.pmgithubclient.repo.info.ui
 
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import krasnikov.project.pmgithubclient.R
-import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.ContributorsFragment
-import krasnikov.project.pmgithubclient.repoinfo.ui.issues.IssuesFragment
-import krasnikov.project.pmgithubclient.repoinfo.ui.readme.ReadMeFragment
-import java.lang.IllegalArgumentException
+import krasnikov.project.pmgithubclient.repo.info.ui.contributors.ContributorsFragment
+import krasnikov.project.pmgithubclient.repo.info.ui.issues.IssuesFragment
+import krasnikov.project.pmgithubclient.repo.info.ui.readme.ReadMeFragment
 
 class RepoInfoPagerAdapter(
     fragment: Fragment,

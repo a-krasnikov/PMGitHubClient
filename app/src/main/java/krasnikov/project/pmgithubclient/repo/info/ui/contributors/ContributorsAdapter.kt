@@ -1,4 +1,4 @@
-package krasnikov.project.pmgithubclient.repoinfo.ui.contributors
+package krasnikov.project.pmgithubclient.repo.info.ui.contributors
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import krasnikov.project.pmgithubclient.R
 import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
 import krasnikov.project.pmgithubclient.databinding.RecyclerItemContributorBinding
-import krasnikov.project.pmgithubclient.repoinfo.data.model.Contributor
+import krasnikov.project.pmgithubclient.repo.info.data.model.Contributor
 import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.load
 

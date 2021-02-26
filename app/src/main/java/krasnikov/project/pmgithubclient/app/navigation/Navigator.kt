@@ -3,11 +3,12 @@ package krasnikov.project.pmgithubclient.app.navigation
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import krasnikov.project.pmgithubclient.R
+import krasnikov.project.pmgithubclient.repo.issue.ui.IssueInfoFragment
 import krasnikov.project.pmgithubclient.login.ui.LoginFragment
-import krasnikov.project.pmgithubclient.repoinfo.ui.RepoInfoFragment
 import krasnikov.project.pmgithubclient.search.ui.SearchFragment
+import krasnikov.project.pmgithubclient.repo.info.data.model.Issue
+import krasnikov.project.pmgithubclient.repo.info.ui.RepoInfoFragment
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.userinfo.ui.UserInfoFragment
 
@@ -37,8 +38,16 @@ object Navigator {
     }
 
     fun navigateToSearch(fragmentManager: FragmentManager, query: String) {
-        fragmentManager.commit {
+         fragmentManager.commit {
             val fragment = SearchFragment.newInstance(query)
+            replace(R.id.fragment_container, fragment)
+            setReorderingAllowed(true)
+        }
+    }
+  
+    fun navigateToIssueInfo(fragmentManager: FragmentManager, owner: String, repo: String, issue: Issue) {
+        fragmentManager.commit {
+            val fragment = IssueInfoFragment.newInstance(owner, repo, issue)
             replace(R.id.fragment_container, fragment)
             setReorderingAllowed(true)
         }

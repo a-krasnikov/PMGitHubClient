@@ -1,4 +1,4 @@
-package krasnikov.project.pmgithubclient.repoinfo.ui.readme
+package krasnikov.project.pmgithubclient.repo.info.ui.readme
 
 import android.os.Bundle
 import android.view.View
