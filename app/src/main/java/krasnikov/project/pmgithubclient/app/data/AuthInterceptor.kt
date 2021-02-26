@@ -9,8 +9,9 @@ class AuthInterceptor(private val pref: SharedPref) : Interceptor {
         val originalRequest = chain.request()
 
         val request = originalRequest.newBuilder()
-            .header("Authorization", pref.token)
-            .header("Accept", "application/vnd.github.v3+json")
+            //.header("Authorization", pref.token)
+            //.header("Accept", "application/vnd.github.v3+json")
+            .header("Accept", "application/vnd.github.squirrel-girl-preview+json")
             .build()
 
         return chain.proceed(request)

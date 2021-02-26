@@ -1,4 +1,4 @@
-package krasnikov.project.pmgithubclient.repoinfo.ui.contributors
+package krasnikov.project.pmgithubclient.repo.info.ui.contributors
 
 import android.os.Bundle
 import android.view.View

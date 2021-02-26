@@ -3,8 +3,6 @@ package krasnikov.project.pmgithubclient.login.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,7 +11,6 @@ import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentLoginBinding
 import krasnikov.project.pmgithubclient.login.data.AuthHelper
-import krasnikov.project.pmgithubclient.repoinfo.ui.RepoInfoFragment
 import krasnikov.project.pmgithubclient.utils.State
 
 class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {

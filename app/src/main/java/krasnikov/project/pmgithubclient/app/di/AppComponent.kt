@@ -3,7 +3,8 @@ package krasnikov.project.pmgithubclient.app.di
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
 import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
-import krasnikov.project.pmgithubclient.repoinfo.data.RepositoryService
+import krasnikov.project.pmgithubclient.repo.issue.data.IssueService
+import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
 import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -35,6 +36,10 @@ object AppComponent {
 
     val repositoryService: RepositoryService by lazy {
         retrofit.create(RepositoryService::class.java)
+    }
+
+    val issueService: IssueService by lazy {
+        retrofit.create(IssueService::class.java)
     }
 
 }

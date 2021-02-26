@@ -1,4 +1,4 @@
-package krasnikov.project.pmgithubclient.repoinfo.ui
+package krasnikov.project.pmgithubclient.repo.info.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

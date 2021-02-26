@@ -1,15 +1,14 @@
-package krasnikov.project.pmgithubclient.repoinfo.ui.issues
+package krasnikov.project.pmgithubclient.repo.info.ui.issues
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
-import krasnikov.project.pmgithubclient.repoinfo.data.RepositoryService
-import krasnikov.project.pmgithubclient.repoinfo.data.model.Issue
+import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
+import krasnikov.project.pmgithubclient.repo.info.data.model.Issue
 import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.Result
-import krasnikov.project.pmgithubclient.utils.State
 import java.lang.Exception
 
 class IssuesViewModel(
