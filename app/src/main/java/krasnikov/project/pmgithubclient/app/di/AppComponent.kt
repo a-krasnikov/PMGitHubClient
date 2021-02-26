@@ -2,7 +2,10 @@ package krasnikov.project.pmgithubclient.app.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
+import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
 import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
+import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
+import krasnikov.project.pmgithubclient.userinfo.data.UserService
 import krasnikov.project.pmgithubclient.repo.issue.data.IssueService
 import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
 import okhttp3.HttpUrl
@@ -16,7 +19,7 @@ object AppComponent {
     const val SCHEMA = "https"
     const val HOST = "api.github.com"
 
-    private val converterFactory: Converter.Factory by lazy {
+    val converterFactory: Converter.Factory by lazy {
         Json { ignoreUnknownKeys = true }
             .asConverterFactory("application/json".toMediaType())
     }
@@ -38,8 +41,11 @@ object AppComponent {
         retrofit.create(RepositoryService::class.java)
     }
 
+    val userService: UserService by lazy {
+        retrofit.create(UserService::class.java)
+    }
+
     val issueService: IssueService by lazy {
         retrofit.create(IssueService::class.java)
     }
-
 }
