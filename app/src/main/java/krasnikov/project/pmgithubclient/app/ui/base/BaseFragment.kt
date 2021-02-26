@@ -13,7 +13,6 @@ import androidx.viewbinding.ViewBinding
 import dagger.hilt.android.AndroidEntryPoint
 import krasnikov.project.pmgithubclient.R
 
-@AndroidEntryPoint
 abstract class BaseFragment<T : ViewBinding, V : BaseViewModel> : Fragment() {
 
     protected lateinit var binding: T

@@ -29,8 +29,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class IssueInfoViewModel @Inject constructor(
-    private val owner: String,
-    private val repo: String,
     private val issueService: IssueService
 ) : BaseViewModel() {
 

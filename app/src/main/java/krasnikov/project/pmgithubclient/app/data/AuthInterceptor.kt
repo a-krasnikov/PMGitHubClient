@@ -10,7 +10,7 @@ class AuthInterceptor @Inject constructor(private val sharedPref: SharedPref) : 
         val originalRequest = chain.request()
 
         val request = originalRequest.newBuilder()
-            //.header("Authorization", pref.token)
+            .addHeader("Authorization", sharedPref.token)
             .addHeader("Accept", "application/vnd.github.v3+json")
             //.header("Accept", "application/vnd.github.squirrel-girl-preview+json")
             .build()
