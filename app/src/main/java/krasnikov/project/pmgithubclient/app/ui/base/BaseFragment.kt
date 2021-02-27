@@ -33,7 +33,7 @@ abstract class BaseFragment<T : ViewBinding, V : BaseViewModel> : Fragment() {
 
     private fun observeNavEvent() {
         viewModel.navigationEvent.observe(viewLifecycleOwner) {
-            it.navigate(parentFragmentManager)
+            it.navigate(requireActivity().supportFragmentManager)
         }
     }
 
