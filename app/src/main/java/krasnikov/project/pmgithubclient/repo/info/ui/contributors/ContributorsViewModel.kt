@@ -1,6 +1,7 @@
 package krasnikov.project.pmgithubclient.repo.info.ui.contributors
 
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -10,14 +11,14 @@ import krasnikov.project.pmgithubclient.repo.info.data.model.Contributor
 import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.Result
 import java.lang.Exception
+import javax.inject.Inject
 
-class ContributorsViewModel(
-    private val owner: String,
-    private val repo: String,
+@HiltViewModel
+class ContributorsViewModel @Inject constructor(
     private val repositoryService: RepositoryService
 ) : BaseViewModel() {
 
-    val pagedListContributors by lazy {
+    fun loadContributors(owner: String, repo: String) =
         object : PagedList<Contributor>() {
             override fun loadNextData(page: Int, callback: (Result<List<Contributor>>) -> Unit) {
                 viewModelScope.launch {
@@ -33,5 +34,5 @@ class ContributorsViewModel(
                 }
             }
         }
-    }
+
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
@@ -22,8 +23,11 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 
+@AndroidEntryPoint
 class ReactionsDialogFragment : DialogFragment() {
     private var commentId by FragmentArgsDelegate<Int>(ARG_ID)
+    private var owner by FragmentArgsDelegate<String>(ARG_OWNER)
+    private var repo by FragmentArgsDelegate<String>(ARG_REPO)
 
     private val viewModel: IssueInfoViewModel by viewModels(
             ownerProducer = {requireParentFragment()}
@@ -44,13 +48,13 @@ class ReactionsDialogFragment : DialogFragment() {
 
     private fun showReactions() {
         viewModel.viewModelScope.launch {
-            binding.tvReactions.text = viewModel.getCommentReactions(commentId).toString()
+            binding.tvReactions.text = viewModel.getCommentReactions(owner, repo, commentId).toString()
         }
     }
 
     private fun createReaction(reactionType: ReactionType) {
         viewModel.viewModelScope.launch {
-            binding.tvReactions.text = viewModel.createCommentReaction(commentId, reactionType).toString()
+            binding.tvReactions.text = viewModel.createCommentReaction(owner, repo, commentId, reactionType).toString()
         }
     }
 
@@ -69,11 +73,15 @@ class ReactionsDialogFragment : DialogFragment() {
 
     companion object {
         private const val ARG_ID = "ARG_ID"
+        private const val ARG_OWNER = "ARG_OWNER"
+        private const val ARG_REPO = "ARG_REPO"
         const val TAG = "ReactionsDialogFragment"
 
-        fun newInstance(commentId: Int) =
+        fun newInstance(owner: String, repo: String, commentId: Int) =
                 ReactionsDialogFragment().apply {
                     this.commentId = commentId
+                    this.owner = owner
+                    this.repo = repo
                 }
     }
 }

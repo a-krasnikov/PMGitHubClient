@@ -7,8 +7,9 @@ import krasnikov.project.pmgithubclient.userinfo.data.model.User
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.Result
 import java.lang.Exception
+import javax.inject.Inject
 
-class UserInfoRepository(private val userService: UserService) {
+class UserInfoRepository @Inject constructor(private val userService: UserService) {
 
     suspend fun getUser(userProfile: UserProfile): Result<User> {
         return withContext(Dispatchers.IO) {

@@ -3,6 +3,7 @@ package krasnikov.project.pmgithubclient.app.navigation
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
+import androidx.fragment.app.replace
 import krasnikov.project.pmgithubclient.R
 import krasnikov.project.pmgithubclient.repo.issue.ui.IssueInfoFragment
 import krasnikov.project.pmgithubclient.login.ui.LoginFragment

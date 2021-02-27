@@ -5,6 +5,7 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
 import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
 import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
@@ -20,35 +21,13 @@ import krasnikov.project.pmgithubclient.utils.*
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel>() {
-
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .client(
-                OkHttpClient().newBuilder()
-                    .addInterceptor(AuthInterceptor(SharedPref(requireContext())))
-                    .addInterceptor(ErrorInterceptor())
-                    .build()
-            )
-            .baseUrl(HttpUrl.Builder().scheme(AppComponent.SCHEMA).host(AppComponent.HOST).build())
-            .addConverterFactory(AppComponent.converterFactory)
-            .build()
-    }
-
     private var userProfile by FragmentArgsDelegate<UserProfile>(ARG_USER_PROFILE)
 
-    override val viewModel by viewModels<UserInfoViewModel> {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                val repository = UserInfoRepository(retrofit.create(UserService::class.java))
-                return UserInfoViewModel(
-                    userProfile,
-                    repository
-                ) as T
-            }
-        }
-    }
+    override val viewModel: UserInfoViewModel by viewModels()
 
     override fun setupBinding() {
         binding = FragmentUserInfoBinding.inflate(layoutInflater)
@@ -57,6 +36,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.loadUserInfo(userProfile)
         observeUserContent()
     }
 

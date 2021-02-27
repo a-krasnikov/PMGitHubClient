@@ -20,37 +20,5 @@ object AppComponent {
     const val SCHEMA = "https"
     const val HOST = "api.github.com"
 
-    val converterFactory: Converter.Factory by lazy {
-        Json { ignoreUnknownKeys = true }
-            .asConverterFactory("application/json".toMediaType())
-    }
 
-    private val retrofit: Retrofit by lazy {
-        Retrofit.Builder()
-            .client(
-                OkHttpClient().newBuilder()
-                    //.addInterceptor(AuthInterceptor(SharedPref(context)))
-                    .addInterceptor(ErrorInterceptor())
-                    .build()
-            )
-            .baseUrl(HttpUrl.Builder().scheme(SCHEMA).host(HOST).build())
-            .addConverterFactory(converterFactory)
-            .build()
-    }
-
-    val repositoryService: RepositoryService by lazy {
-        retrofit.create(RepositoryService::class.java)
-    }
-
-    val userService: UserService by lazy {
-        retrofit.create(UserService::class.java)
-    }
-
-    val searchService: SearchService by lazy {
-        retrofit.create(SearchService::class.java)
-    }
-  
-    val issueService: IssueService by lazy {
-        retrofit.create(IssueService::class.java)
-    }
 }
