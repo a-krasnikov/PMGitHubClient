@@ -5,23 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.Json
-import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
-import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.databinding.DialogFragmentCommentReactionBinding
-import krasnikov.project.pmgithubclient.repo.issue.data.IssueService
 import krasnikov.project.pmgithubclient.repo.issue.data.model.ReactionType
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
-import okhttp3.HttpUrl
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
 
 @AndroidEntryPoint
 class ReactionsDialogFragment : DialogFragment() {

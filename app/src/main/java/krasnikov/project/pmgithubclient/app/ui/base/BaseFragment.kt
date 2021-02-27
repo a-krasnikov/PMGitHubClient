@@ -4,22 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.Toast
-import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
-import dagger.hilt.android.AndroidEntryPoint
-import krasnikov.project.pmgithubclient.R
 
 abstract class BaseFragment<T : ViewBinding, V : BaseViewModel> : Fragment() {
 
     protected lateinit var binding: T
 
     protected abstract val viewModel: V
-
-    private val progressBar by lazy { view?.findViewById<ProgressBar>(R.id.pbLoading) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,14 +35,6 @@ abstract class BaseFragment<T : ViewBinding, V : BaseViewModel> : Fragment() {
         viewModel.navigationEvent.observe(viewLifecycleOwner) {
             it.navigate(parentFragmentManager)
         }
-    }
-
-    protected fun showLoading() {
-        progressBar?.visibility = View.VISIBLE
-    }
-
-    protected fun hideLoading() {
-        progressBar?.visibility = View.GONE
     }
 
     protected fun showToast(@StringRes stringRes: Int, duration: Int = Toast.LENGTH_SHORT) {

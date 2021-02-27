@@ -3,25 +3,13 @@ package krasnikov.project.pmgithubclient.userinfo.ui
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
-import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
-import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
-import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
-import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentUserInfoBinding
-import krasnikov.project.pmgithubclient.userinfo.data.UserInfoRepository
-import krasnikov.project.pmgithubclient.userinfo.data.UserService
 import krasnikov.project.pmgithubclient.userinfo.data.model.Repo
 import krasnikov.project.pmgithubclient.userinfo.data.model.User
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.*
-import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel>() {

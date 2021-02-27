@@ -3,11 +3,8 @@ package krasnikov.project.pmgithubclient.repo.info.ui.readme
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
 import krasnikov.project.pmgithubclient.R
-import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentReadmeBinding
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
