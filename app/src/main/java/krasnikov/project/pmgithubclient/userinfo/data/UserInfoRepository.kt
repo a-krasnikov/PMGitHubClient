@@ -28,19 +28,15 @@ class UserInfoRepository @Inject constructor(private val userService: UserServic
         }
     }
 
-    suspend fun getUserRepos(userProfile: UserProfile, page: Int): Result<List<Repo>> {
+    suspend fun getUserRepos(userProfile: UserProfile, page: Int): List<Repo> {
         return withContext(Dispatchers.IO) {
-            try {
-                when (userProfile) {
-                    is UserProfile.LoggedUser -> {
-                        Result.Success(userService.getLoggedUserRepos(page))
-                    }
-                    is UserProfile.User -> {
-                        Result.Success(userService.getUserRepos(userProfile.username, page))
-                    }
+            when (userProfile) {
+                is UserProfile.LoggedUser -> {
+                    userService.getLoggedUserRepos(page)
                 }
-            } catch (ex: Exception) {
-                Result.Error(ex)
+                is UserProfile.User -> {
+                    userService.getUserRepos(userProfile.username, page)
+                }
             }
         }
     }

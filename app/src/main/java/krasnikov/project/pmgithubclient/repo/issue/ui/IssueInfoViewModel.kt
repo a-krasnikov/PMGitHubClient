@@ -33,22 +33,9 @@ class IssueInfoViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     fun getIssueComments(owner: String, repo: String, issue: Issue) =
-        object : PagedList<Comment>() {
-            override fun loadNextData(page: Int, callback: (Result<List<Comment>>) -> Unit) {
-                viewModelScope.launch() {
-                    val comments = try {
-                        Result.Success(withContext(Dispatchers.IO) {
-                            issueService.getIssueComments(owner, repo, issue.number, page)
-                        })
-                    } catch (exception: Exception) {
-                        Result.Error(exception)
-                    }
-                    callback(comments)
-                }
-            }
-
+        object : PagedList<Comment>(viewModelScope) {
+            override suspend fun loadNextData(page: Int) = issueService.getIssueComments(owner, repo, issue.number, page)
         }
-
 
     suspend fun getCommentReactions(owner: String, repo: String, commentId: Int): List<Reaction> {
         return withContext(Dispatchers.IO) {
@@ -67,5 +54,4 @@ class IssueInfoViewModel @Inject constructor(
         }
         return getCommentReactions(owner, repo, commentId)
     }
-
 }

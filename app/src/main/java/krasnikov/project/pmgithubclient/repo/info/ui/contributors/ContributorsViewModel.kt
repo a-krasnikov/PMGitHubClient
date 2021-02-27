@@ -3,7 +3,6 @@ package krasnikov.project.pmgithubclient.repo.info.ui.contributors
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
@@ -19,20 +18,9 @@ class ContributorsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
     fun loadContributors(owner: String, repo: String) =
-        object : PagedList<Contributor>() {
-            override fun loadNextData(page: Int, callback: (Result<List<Contributor>>) -> Unit) {
-                viewModelScope.launch {
-                    val result = withContext(Dispatchers.IO) {
-                        try {
-                            Result.Success(repositoryService.getContributors(owner, repo, page))
-                        } catch (ex: Exception) {
-                            //TODO Error
-                            Result.Error(ex)
-                        }
-                    }
-                    callback(result)
-                }
+         object : PagedList<Contributor>(viewModelScope) {
+            override suspend fun loadNextData(page: Int) = withContext(Dispatchers.IO) {
+                repositoryService.getContributors(owner, repo, page)
             }
         }
-
 }

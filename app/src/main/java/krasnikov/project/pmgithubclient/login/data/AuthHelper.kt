@@ -23,8 +23,8 @@ class AuthHelper @Inject constructor(private val loginService: LoginService) {
         const val HOST = "github.com"
         const val REDIRECT_URL = "pmgithubclient://callback"
 
-        const val CLIENT_ID: String = "Iv1.ed322da1df41ca03"
-        const val CLIENT_SECRET: String = "52fde02da40698db85c852b8ac63db51d7687fdb"
+        const val CLIENT_ID: String = "7096fdc9944d7e8c5c73"
+        const val CLIENT_SECRET: String = "8d8770f3497a794efc419b2084d3034ffeca1464"
 
         const val OAUTH2_PATH = "login/oauth/authorize"
         const val OAUTH2_SCOPE = "user,repo"

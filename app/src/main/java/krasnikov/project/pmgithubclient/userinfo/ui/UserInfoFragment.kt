@@ -25,6 +25,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel>() {
+
     private var userProfile by FragmentArgsDelegate<UserProfile>(ARG_USER_PROFILE)
 
     override val viewModel: UserInfoViewModel by viewModels()
@@ -52,7 +53,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
                     showUserRepos(it.data.repos)
                 }
                 is State.Error -> {
-                    showToast(it.error.stringRes)
+                    //showToast(it.error.stringRes)
                     hideLoading()
                 }
             }
@@ -66,7 +67,8 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     }
 
     private fun showUserRepos(repos: PagedList<Repo>) {
-        val adapter = RepositoriesAdapter(repos).apply {
+        val adapter = RepositoriesAdapter().apply {
+            pagedList = repos
             onItemClickListener = { viewModel.onRepoClick(it) }
         }
         binding.rvRepo.adapter = adapter

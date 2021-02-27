@@ -9,10 +9,9 @@ import krasnikov.project.pmgithubclient.databinding.RecyclerItemIssueBinding
 import krasnikov.project.pmgithubclient.repo.info.data.model.Issue
 import krasnikov.project.pmgithubclient.utils.PagedList
 
-class IssuesAdapter(pagedList: PagedList<Issue>) :
-    PagedListAdapter<Issue, IssuesAdapter.IssueViewHolder>(pagedList) {
+class IssuesAdapter : PagedListAdapter<Issue, IssuesAdapter.IssueViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IssueViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup): IssueViewHolder {
         return IssueViewHolder(
             RecyclerItemIssueBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -22,9 +21,8 @@ class IssuesAdapter(pagedList: PagedList<Issue>) :
         )
     }
 
-    override fun onBindViewHolder(holder: IssueViewHolder, position: Int) {
-        holder.bind(items[position])
-        super.onBindViewHolder(holder, position)
+    override fun onBindViewHolder(holder: IssueViewHolder, issue: Issue) {
+        holder.bind(issue)
     }
 
     class IssueViewHolder(private val binding: RecyclerItemIssueBinding) :

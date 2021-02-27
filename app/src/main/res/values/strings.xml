@@ -17,7 +17,9 @@
     <!-- Search -->
     <string name="hint_search">User name</string>
 
-    <!--Reactions -->
+    <string name="btn_retry">Retry</string>
+
+  <!--Reactions -->
     <string name="reaction_and_count">%1s %2d</string>
 
 </resources>

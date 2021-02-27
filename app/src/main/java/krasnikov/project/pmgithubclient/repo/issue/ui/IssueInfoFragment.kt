@@ -38,7 +38,8 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
     }
 
     private fun setupRecycler() {
-        commentAdapter = CommentsAdapter(viewModel.getIssueComments(owner, repo, issue)).apply {
+        commentAdapter = CommentsAdapter().apply {
+            pagedList = viewModel.pagedCommentList
             onItemClickListener = { comment ->
                 openReactionDialog(comment)
             }

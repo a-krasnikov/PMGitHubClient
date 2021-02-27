@@ -7,13 +7,12 @@ import krasnikov.project.pmgithubclient.R
 import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
 import krasnikov.project.pmgithubclient.databinding.RecyclerItemContributorBinding
 import krasnikov.project.pmgithubclient.repo.info.data.model.Contributor
-import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.load
 
-class ContributorsAdapter(pagedList: PagedList<Contributor>) :
-    PagedListAdapter<Contributor, ContributorsAdapter.ContributorViewHolder>(pagedList) {
+class ContributorsAdapter :
+    PagedListAdapter<Contributor, ContributorsAdapter.ContributorViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContributorViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup): ContributorViewHolder {
         return ContributorViewHolder(
             RecyclerItemContributorBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -23,9 +22,8 @@ class ContributorsAdapter(pagedList: PagedList<Contributor>) :
         )
     }
 
-    override fun onBindViewHolder(holder: ContributorViewHolder, position: Int) {
-        holder.bind(items[position])
-        super.onBindViewHolder(holder, position)
+    override fun onBindViewHolder(holder: ContributorViewHolder, contributor: Contributor) {
+        holder.bind(contributor)
     }
 
     class ContributorViewHolder(private val binding: RecyclerItemContributorBinding) :
