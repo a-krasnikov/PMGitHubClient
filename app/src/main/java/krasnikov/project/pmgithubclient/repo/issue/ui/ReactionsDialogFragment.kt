@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import krasnikov.project.pmgithubclient.databinding.DialogFragmentCommentReactionBinding
+import krasnikov.project.pmgithubclient.repo.issue.data.model.Reaction
 import krasnikov.project.pmgithubclient.repo.issue.data.model.ReactionType
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
@@ -42,25 +43,21 @@ class ReactionsDialogFragment : DialogFragment() {
 
     private fun showReactions() {
         viewModel.viewModelScope.launch {
-            binding.tvReactions.text =
-                viewModel.getCommentReactions(owner, repo, commentId).toString()
+            val reactions = viewModel.getCommentReactions(owner, repo, commentId)
+            //binding.tvReactions.text = reactions.toString()
+            binding.rvReactions.updateReactions(reactions)
         }
     }
 
     private fun createReaction(reactionType: ReactionType) {
         viewModel.viewModelScope.launch {
-            binding.tvReactions.text =
-                viewModel.createCommentReaction(owner, repo, commentId, reactionType).toString()
+            val reactions = viewModel.createCommentReaction(owner, repo, commentId, Reaction(reactionType.content))
+            //binding.tvReactions.text = reactions.toString()
+            binding.rvReactions.updateReactions(reactions)
         }
     }
 
     private fun setClickListeners() {
-        /*binding.btnReactPlusOne.setOnClickListener {
-            createReaction(ReactionType.PlusOne)
-        }
-        binding.btnReactMinusOne.setOnClickListener {
-            createReaction(ReactionType.MinusOne)
-        }*/
         binding.rvReactions.setClickCallBack {
             createReaction(it)
         }

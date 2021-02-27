@@ -32,7 +32,12 @@ class RepoInfoFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        showRepoName()
         setupTabLayout()
+    }
+
+    private fun showRepoName() {
+        binding.tvRepoName.text = repo
     }
 
     private fun setupBinding() {

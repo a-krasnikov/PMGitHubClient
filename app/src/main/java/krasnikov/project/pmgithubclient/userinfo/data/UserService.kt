@@ -15,7 +15,7 @@ interface UserService {
         @Path("username") username: String
     ): User
 
-    @GET("/user/repos")
+    @GET("/user/repos?affiliation=owner")
     suspend fun getLoggedUserRepos(
         @Query("page") page: Int
     ): List<Repo>

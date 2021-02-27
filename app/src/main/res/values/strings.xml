@@ -20,7 +20,7 @@
     <string name="btn_retry">Retry</string>
 
     <!-- Reactions -->
-    <string name="reaction_and_count">%1s %2d</string>
+    <string name="reaction_and_count">%1s%2d</string>
 
     <!-- Errors -->
     <string name="error_network">Network error</string>

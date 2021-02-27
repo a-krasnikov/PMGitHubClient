@@ -34,10 +34,10 @@ class IssueInfoViewModel @Inject constructor(
         owner: String,
         repo: String,
         commentId: Int,
-        reaction: ReactionType
+        reaction: Reaction
     ): List<Reaction> {
         withContext(Dispatchers.IO) {
-            issueService.createIssueCommentReaction(owner, repo, commentId, reaction.content)
+            issueService.createIssueCommentReaction(owner, repo, commentId, reaction)
         }
         return getCommentReactions(owner, repo, commentId)
     }

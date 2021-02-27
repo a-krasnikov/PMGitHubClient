@@ -5,8 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Reaction(
-    @SerialName("id")
-    val id: Int,
     @SerialName("content")
     val content: String
 )
