@@ -26,11 +26,11 @@ abstract class PagedListAdapter<T, VH : RecyclerView.ViewHolder> :
             }
             is State.Content -> {
                 val startPosition = listSize
-                val itemCount = it.data.size - startPosition
-                if (itemCount != 0) {
+                val count = it.data.size - startPosition
+                if (count != 0) {
                     currentList = it.data
                     currentState = LoadState.NotLoading
-                    notifyItemRangeChanged(startPosition, itemCount)
+                    notifyItemRangeChanged(startPosition, count)
                 } else {
                     endOfPaginationReached = true
                     currentState = LoadState.NotLoading
