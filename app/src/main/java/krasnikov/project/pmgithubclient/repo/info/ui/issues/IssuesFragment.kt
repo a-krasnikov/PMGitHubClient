@@ -34,9 +34,14 @@ class IssuesFragment : BaseFragment<FragmentIssuesBinding, IssuesViewModel>() {
 
     private fun setupRecycler() {
         issuesAdapter = IssuesAdapter().apply {
-            pagedList = viewModel.pagedListIssue
+            pagedList = viewModel.loadIssues(owner, repo)
             onItemClickListener = {
-                Navigator.navigateToIssueInfo(requireParentFragment().parentFragmentManager, owner, repo, it)
+                Navigator.navigateToIssueInfo(
+                    requireParentFragment().parentFragmentManager,
+                    owner,
+                    repo,
+                    it
+                )
             }
         }
         binding.rvIssues.adapter = issuesAdapter

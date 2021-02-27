@@ -35,9 +35,12 @@ class ContributorsFragment : BaseFragment<FragmentContributorsBinding, Contribut
 
     private fun setupRecycler() {
         contributorsAdapter = ContributorsAdapter().apply {
-            pagedList = viewModel.pagedListContributors
+            pagedList = viewModel.loadContributors(owner, repo)
             onItemClickListener = {
-                Navigator.navigateToUserInfo(requireParentFragment().parentFragmentManager, UserProfile.User(it.login))
+                Navigator.navigateToUserInfo(
+                    requireParentFragment().parentFragmentManager,
+                    UserProfile.User(it.login)
+                )
             }
         }
 

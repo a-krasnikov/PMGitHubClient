@@ -55,10 +55,10 @@ class UserInfoViewModel @Inject constructor(
         }
     }
 
-    private fun loadRepos() = object : PagedList<Repo>(viewModelScope) {
+    private fun loadRepos(userProfile: UserProfile) = object : PagedList<Repo>(viewModelScope) {
         override suspend fun loadNextData(page: Int) = repository.getUserRepos(userProfile, page)
     }
-  
+
     fun onRepoClick(repo: Repo) {
         _navigationEvent.value = NavEvent {
             Navigator.navigateToRepoInfo(it)
