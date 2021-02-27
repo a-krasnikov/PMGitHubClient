@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
         if (SharedPref(this).token.isEmpty()) {
             Navigator.navigateToLogin(supportFragmentManager)
         } else {
-            Navigator.navigateToUserInfo(supportFragmentManager, UserProfile.LoggedUser)
+            Navigator.startScreen(supportFragmentManager)
         }
     }
 }

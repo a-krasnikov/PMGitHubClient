@@ -21,10 +21,19 @@ object Navigator {
         }
     }
 
+    fun startScreen(fragmentManager: FragmentManager) {
+        fragmentManager.commit {
+            val fragment = UserInfoFragment.newInstance(UserProfile.LoggedUser)
+            add(R.id.fragment_container, fragment)
+            setReorderingAllowed(true)
+        }
+    }
+
     fun navigateToUserInfo(fragmentManager: FragmentManager, userProfile: UserProfile) {
         fragmentManager.commit {
             val fragment = UserInfoFragment.newInstance(userProfile)
             replace(R.id.fragment_container, fragment)
+            addToBackStack(null)
             setReorderingAllowed(true)
         }
     }
@@ -33,6 +42,7 @@ object Navigator {
         fragmentManager.commit {
             val fragment = RepoInfoFragment.newInstance(owner, repo)
             replace(R.id.fragment_container, fragment)
+            addToBackStack(null)
             setReorderingAllowed(true)
         }
     }
@@ -41,6 +51,7 @@ object Navigator {
         fragmentManager.commit {
             val fragment = SearchFragment.newInstance(query)
             replace(R.id.fragment_container, fragment)
+            addToBackStack(null)
             setReorderingAllowed(true)
         }
     }
@@ -54,6 +65,7 @@ object Navigator {
         fragmentManager.commit {
             val fragment = IssueInfoFragment.newInstance(owner, repo, issue)
             replace(R.id.fragment_container, fragment)
+            addToBackStack(null)
             setReorderingAllowed(true)
         }
     }
