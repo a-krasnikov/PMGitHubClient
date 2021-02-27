@@ -4,8 +4,7 @@
     android:id="@+id/searchToolbar"
     style="@style/Widget.MaterialComponents.Toolbar.Primary"
     android:layout_width="match_parent"
-    android:layout_height="?attr/actionBarSize"
-    app:navigationIcon="@drawable/ic_back">
+    android:layout_height="?attr/actionBarSize">
 
     <LinearLayout
         android:layout_width="match_parent"

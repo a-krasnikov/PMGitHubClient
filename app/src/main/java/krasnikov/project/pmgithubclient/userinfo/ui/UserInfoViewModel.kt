@@ -65,6 +65,12 @@ class UserInfoViewModel @Inject constructor(
         }
     }
 
+    fun navigateToSearch(query: String) {
+        _navigationEvent.value = NavigationEvent {
+            Navigator.navigateToSearch(it, query)
+        }
+    }
+
     private fun navigateToLogin() {
         _navigationEvent.value = NavigationEvent {
             Navigator.navigateToLogin(it)
