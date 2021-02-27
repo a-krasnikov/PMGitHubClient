@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvPlusOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+1"
+        app:layout_constraintEnd_toStartOf="@id/tvMinusOne"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvMinusOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-1"
+        app:layout_constraintEnd_toStartOf="@id/tvLaugh"
+        app:layout_constraintStart_toEndOf="@id/tvPlusOne"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvLaugh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="l"
+        app:layout_constraintEnd_toStartOf="@id/tvConfused"
+        app:layout_constraintStart_toEndOf="@id/tvMinusOne"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvConfused"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="c"
+        app:layout_constraintEnd_toStartOf="@id/tvHeart"
+        app:layout_constraintStart_toEndOf="@id/tvLaugh"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvHeart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="h"
+        app:layout_constraintEnd_toStartOf="@id/tvHooray"
+        app:layout_constraintStart_toEndOf="@id/tvConfused"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvHooray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ho"
+        app:layout_constraintEnd_toStartOf="@id/tvRocket"
+        app:layout_constraintStart_toEndOf="@id/tvHeart"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvRocket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="r"
+        app:layout_constraintEnd_toStartOf="@id/tvEyes"
+        app:layout_constraintStart_toEndOf="@id/tvHooray"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvEyes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="e"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvRocket"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
