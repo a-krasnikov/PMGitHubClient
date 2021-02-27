@@ -2,6 +2,7 @@ package krasnikov.project.pmgithubclient.userinfo.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
@@ -41,11 +42,19 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
                     showUserRepos(it.data.repos)
                 }
                 is State.Error -> {
-                    //showToast(it.error.stringRes)
+                    showToast(it.error.stringRes)
                     hideLoading()
                 }
             }
         }
+    }
+
+    private fun showLoading() {
+        binding.pbLoading.isVisible = true
+    }
+
+    private fun hideLoading() {
+        binding.pbLoading.isVisible = false
     }
 
     private fun showUser(user: User) {
