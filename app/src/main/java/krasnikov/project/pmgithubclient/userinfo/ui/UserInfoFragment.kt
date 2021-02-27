@@ -27,7 +27,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
         Retrofit.Builder()
             .client(
                 OkHttpClient().newBuilder()
-                    .addInterceptor(AuthInterceptor(SharedPref(requireContext())))
+                    //.addInterceptor(AuthInterceptor(SharedPref(requireContext())))
                     .addInterceptor(ErrorInterceptor())
                     .build()
             )
@@ -43,7 +43,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
             override fun <T : ViewModel?> create(modelClass: Class<T>): T {
                 val repository = UserInfoRepository(retrofit.create(UserService::class.java))
                 return UserInfoViewModel(
-                    userProfile,
+                    UserProfile.User("a-krasnikov"),
                     repository
                 ) as T
             }
@@ -72,7 +72,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
                     showUserRepos(it.data.repos)
                 }
                 is State.Error -> {
-                    showToast(it.error.stringRes)
+                    //showToast(it.error.stringRes)
                     hideLoading()
                 }
             }
@@ -86,7 +86,8 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     }
 
     private fun showUserRepos(repos: PagedList<Repo>) {
-        val adapter = RepositoriesAdapter(repos).apply {
+        val adapter = RepositoriesAdapter().apply {
+            pagedList = repos
             onItemClickListener = { viewModel.onRepoClick(it) }
         }
         binding.rvRepo.adapter = adapter

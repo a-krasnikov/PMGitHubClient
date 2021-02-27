@@ -6,14 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
 import krasnikov.project.pmgithubclient.databinding.RecyclerItemRepoBinding
 import krasnikov.project.pmgithubclient.userinfo.data.model.Repo
-import krasnikov.project.pmgithubclient.utils.PagedList
 
-class RepositoriesAdapter(pagedList: PagedList<Repo>) :
-    PagedListAdapter<Repo, RepositoriesAdapter.RepoViewHolder>(pagedList) {
+class RepositoriesAdapter : PagedListAdapter<Repo, RepositoriesAdapter.RepoViewHolder>() {
 
-    var onItemClickListener: (repo: Repo) -> Unit = {}
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RepoViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup): RepoViewHolder {
         return RepoViewHolder(
             RecyclerItemRepoBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -23,12 +19,8 @@ class RepositoriesAdapter(pagedList: PagedList<Repo>) :
         )
     }
 
-    override fun onBindViewHolder(holder: RepoViewHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
-        holder.bind(items[position])
-        holder.itemView.setOnClickListener {
-            onItemClickListener(items[position])
-        }
+    override fun onBindViewHolder(holder: RepoViewHolder, repo: Repo) {
+        holder.bind(repo)
     }
 
     class RepoViewHolder(private val binding: RecyclerItemRepoBinding) :

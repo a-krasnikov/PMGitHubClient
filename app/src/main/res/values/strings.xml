@@ -17,4 +17,6 @@
     <!-- Search -->
     <string name="hint_search">User name</string>
 
+    <string name="btn_retry">Retry</string>
+
 </resources>

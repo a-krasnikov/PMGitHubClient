@@ -26,26 +26,16 @@ import retrofit2.Retrofit
 import java.lang.Exception
 
 class IssueInfoViewModel(
-        private val owner: String,
-        private val repo: String,
-        private val issue: Issue,
-        private val issueService: IssueService,
-        private val sharedPrefs: SharedPref
+    private val owner: String,
+    private val repo: String,
+    private val issue: Issue,
+    private val issueService: IssueService,
+    private val sharedPrefs: SharedPref
 ) : BaseViewModel() {
 
     val pagedCommentList by lazy {
-        object : PagedList<Comment>() {
-            override fun loadNextData(page: Int, callback: (Result<List<Comment>>) -> Unit) {
-                viewModelScope.launch() {
-                    val comments = try {
-                        Result.Success(getIssueComments(page))
-                    } catch (exception: Exception) {
-                        Result.Error(exception)
-                    }
-                    callback(comments)
-                }
-            }
-
+        object : PagedList<Comment>(viewModelScope) {
+            override suspend fun loadNextData(page: Int) = getIssueComments(page)
         }
     }
 
@@ -69,15 +59,15 @@ class IssueInfoViewModel(
     }
 
     private val service =
-            Retrofit.Builder()
-                    .client(
-                            OkHttpClient().newBuilder()
-                                    .addInterceptor(AuthInterceptor(sharedPrefs))
-                                    .addInterceptor(ErrorInterceptor())
-                                    .build()
-                    )
-                    .baseUrl(HttpUrl.Builder().scheme(AppComponent.SCHEMA).host(AppComponent.HOST).build())
-                    .addConverterFactory(Json { ignoreUnknownKeys = true }
-                            .asConverterFactory("application/json".toMediaType()))
-                    .build().create(IssueService::class.java)
+        Retrofit.Builder()
+            .client(
+                OkHttpClient().newBuilder()
+                    .addInterceptor(AuthInterceptor(sharedPrefs))
+                    .addInterceptor(ErrorInterceptor())
+                    .build()
+            )
+            .baseUrl(HttpUrl.Builder().scheme(AppComponent.SCHEMA).host(AppComponent.HOST).build())
+            .addConverterFactory(Json { ignoreUnknownKeys = true }
+                .asConverterFactory("application/json".toMediaType()))
+            .build().create(IssueService::class.java)
 }

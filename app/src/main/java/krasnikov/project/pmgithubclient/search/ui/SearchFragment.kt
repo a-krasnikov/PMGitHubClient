@@ -12,9 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentSearchBinding
-import krasnikov.project.pmgithubclient.repoinfo.ui.contributors.ContributorsFragment
-import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
-import krasnikov.project.pmgithubclient.userinfo.ui.UserInfoFragment
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
@@ -70,7 +67,9 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
 
     private fun observeContentSearch() {
         viewModel.contentSearch.observe(viewLifecycleOwner) {
-            binding.rvSearch.adapter = UsersAdapter(it)
+            binding.rvSearch.adapter = UsersAdapter().apply {
+                pagedList = it
+            }
         }
     }
 

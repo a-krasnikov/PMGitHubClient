@@ -6,8 +6,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import krasnikov.project.pmgithubclient.app.di.AppComponent
+import krasnikov.project.pmgithubclient.app.navigation.Navigator
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentContributorsBinding
+import krasnikov.project.pmgithubclient.userinfo.data.model.User
+import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
 class ContributorsFragment : BaseFragment<FragmentContributorsBinding, ContributorsViewModel>() {
@@ -35,7 +38,12 @@ class ContributorsFragment : BaseFragment<FragmentContributorsBinding, Contribut
     }
 
     private fun setupRecycler() {
-        contributorsAdapter = ContributorsAdapter(viewModel.pagedListContributors)
+        contributorsAdapter = ContributorsAdapter().apply {
+            pagedList = viewModel.pagedListContributors
+            onItemClickListener = {
+                Navigator.navigateToUserInfo(requireParentFragment().parentFragmentManager, UserProfile.User(it.login))
+            }
+        }
         binding.rvContributors.adapter = contributorsAdapter
     }
 

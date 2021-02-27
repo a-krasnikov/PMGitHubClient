@@ -2,6 +2,7 @@ package krasnikov.project.pmgithubclient.userinfo.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import krasnikov.project.pmgithubclient.app.data.exception.NetworkRequestException
@@ -32,6 +33,7 @@ class UserInfoViewModel(
     }
 
     private fun loadUserInfo() {
+
         viewModelScope.launch {
             _contentUser.value = State.Loading
             when (val userResult = repository.getUser(userProfile)) {
@@ -56,18 +58,8 @@ class UserInfoViewModel(
         }
     }
 
-    private fun loadRepos() = object : PagedList<Repo>() {
-        override fun loadNextData(page: Int, callback: (Result<List<Repo>>) -> Unit) {
-            viewModelScope.launch {
-                val result = try {
-                    repository.getUserRepos(userProfile, page)
-                } catch (ex: Exception) {
-                    //TODO Error
-                    Result.Error(ex)
-                }
-                callback(result)
-            }
-        }
+    private fun loadRepos() = object : PagedList<Repo>(viewModelScope) {
+        override suspend fun loadNextData(page: Int) = repository.getUserRepos(userProfile, page)
     }
 
     fun onRepoClick(repo: Repo) {

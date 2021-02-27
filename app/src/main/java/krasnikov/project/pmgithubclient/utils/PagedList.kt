@@ -1,28 +1,41 @@
 package krasnikov.project.pmgithubclient.utils
 
-abstract class PagedList<T> {
+import kotlinx.coroutines.*
 
-    private val internalMutableList = mutableListOf<T>()
-    private var currentPage: Int = 0
+abstract class PagedList<T>(private val coroutineScope: CoroutineScope) {
+
+    private val set = mutableSetOf<T>()
+    private var nextPage: Int = 1
+    private var canLoadMore = true
+    private var loadJob: Job? = null
 
     val size
-        get() = internalMutableList.size
+        get() = set.size
 
-    operator fun get(position: Int): T = internalMutableList[position]
+    var stateLoadedListener: (State<List<T>, Exception>) -> Unit = {}
 
-    fun onLoadMore(callback: (Result<Int>) -> Unit) {
-        loadNextData(++currentPage) {
-            when (it) {
-                is Result.Success -> {
-                    internalMutableList.addAll(it.data)
-                    callback(Result.Success(it.data.size))
-                }
-                is Result.Error -> {
-                    callback(Result.Error(it.exception))
+    operator fun get(position: Int): T = set.elementAt(position)
+
+    private var i = 0
+
+    fun onLoadMore() {
+        if (loadJob?.isActive == true) return
+
+        if (canLoadMore) {
+            loadJob = coroutineScope.launch {
+                try {
+                    val newData = loadNextData(nextPage)
+                    set.addAll(newData)
+                    nextPage++
+                    canLoadMore = newData.isNotEmpty()
+                    stateLoadedListener(State.Content(set.toList()))
+                } catch (ex: Exception) {
+                    //TODO Error
+                    stateLoadedListener(State.Error(ex))
                 }
             }
         }
     }
 
-    abstract fun loadNextData(page: Int, callback: (Result<List<T>>) -> Unit)
+    abstract suspend fun loadNextData(page: Int): List<T>
 }

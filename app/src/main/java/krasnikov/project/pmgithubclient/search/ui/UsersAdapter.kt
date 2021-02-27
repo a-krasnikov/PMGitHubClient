@@ -9,12 +9,9 @@ import krasnikov.project.pmgithubclient.userinfo.data.model.User
 import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.load
 
-class UsersAdapter(pagedList: PagedList<User>) :
-    PagedListAdapter<User, UsersAdapter.UserViewHolder>(pagedList) {
+class UsersAdapter : PagedListAdapter<User, UsersAdapter.UserViewHolder>() {
 
-    var onItemClickListener: (user: User) -> Unit = {}
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup): UserViewHolder {
         return UserViewHolder(
             RecyclerItemUserBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -22,14 +19,6 @@ class UsersAdapter(pagedList: PagedList<User>) :
                 false
             )
         )
-    }
-
-    override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
-        super.onBindViewHolder(holder, position)
-        holder.bind(items[position])
-        holder.itemView.setOnClickListener {
-            onItemClickListener(items[position])
-        }
     }
 
     class UserViewHolder(private val binding: RecyclerItemUserBinding) :
@@ -41,5 +30,9 @@ class UsersAdapter(pagedList: PagedList<User>) :
                 tvLogin.text = user.login
             }
         }
+    }
+
+    override fun onBindViewHolder(holder: UserViewHolder, user: User) {
+        holder.bind(user)
     }
 }
