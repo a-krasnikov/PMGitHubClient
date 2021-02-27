@@ -2,17 +2,17 @@ package krasnikov.project.pmgithubclient.userinfo.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import krasnikov.project.pmgithubclient.app.data.exception.NetworkRequestException
 import krasnikov.project.pmgithubclient.app.data.exception.RequestNotAuthorizedException
-import krasnikov.project.pmgithubclient.app.navigation.NavEvent
+import krasnikov.project.pmgithubclient.app.navigation.NavigationEvent
 import krasnikov.project.pmgithubclient.app.navigation.Navigator
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.userinfo.data.UserInfoRepository
 import krasnikov.project.pmgithubclient.userinfo.data.model.Repo
+import krasnikov.project.pmgithubclient.userinfo.data.model.User
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserInfoModel
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.ErrorType
@@ -55,18 +55,18 @@ class UserInfoViewModel @Inject constructor(
         }
     }
 
-    private fun loadRepos() = object : PagedList<Repo>(viewModelScope) {
+    private fun loadRepos(userProfile: UserProfile) = object : PagedList<Repo>(viewModelScope) {
         override suspend fun loadNextData(page: Int) = repository.getUserRepos(userProfile, page)
     }
-  
-    fun onRepoClick(repo: Repo) {
-        _navigationEvent.value = NavEvent {
-            Navigator.navigateToRepoInfo(it)
+
+    fun onRepoClick(repo: String, owner: String) {
+        _navigationEvent.value = NavigationEvent {
+            Navigator.navigateToRepoInfo(it, owner, repo)
         }
     }
 
     private fun navigateToLogin() {
-        _navigationEvent.value = NavEvent {
+        _navigationEvent.value = NavigationEvent {
             Navigator.navigateToLogin(it)
         }
     }

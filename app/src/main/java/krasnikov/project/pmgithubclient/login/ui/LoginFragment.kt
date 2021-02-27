@@ -3,6 +3,7 @@ package krasnikov.project.pmgithubclient.login.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import krasnikov.project.pmgithubclient.R
@@ -49,11 +50,18 @@ class LoginFragment : BaseFragment<FragmentLoginBinding, LoginViewModel>() {
                 }
                 is State.Error -> {
                     hideLoading()
-                    //showToast(it.error.stringRes)
-                    showToast(R.string.toast_login_error)
+                    showToast(it.error.stringRes)
                 }
             }
         }
+    }
+
+    private fun showLoading() {
+        binding.pbLoading.isVisible = true
+    }
+
+    private fun hideLoading() {
+        binding.pbLoading.isVisible = false
     }
 
     private fun startGitHubLogin() {

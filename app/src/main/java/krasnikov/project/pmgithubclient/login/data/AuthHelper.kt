@@ -1,18 +1,10 @@
 package krasnikov.project.pmgithubclient.login.data
 
 import android.net.Uri
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.json.Json
-import krasnikov.project.pmgithubclient.app.data.ErrorInterceptor
 import krasnikov.project.pmgithubclient.login.data.model.AccessToken
 import krasnikov.project.pmgithubclient.utils.Result
-import okhttp3.HttpUrl
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import retrofit2.Converter
-import retrofit2.Retrofit
 import java.lang.Exception
 import javax.inject.Inject
 

@@ -4,11 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import dagger.hilt.android.AndroidEntryPoint
-import krasnikov.project.pmgithubclient.app.data.pref.SharedPref
-import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentIssueInfoBinding
 import krasnikov.project.pmgithubclient.repo.issue.data.model.Comment
@@ -21,10 +17,9 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
     private var repo by FragmentArgsDelegate<String>(ARG_REPO)
     private var issue by FragmentArgsDelegate<Issue>(ARG_ISSUE)
 
-
     private lateinit var commentAdapter: CommentsAdapter
 
-    override val viewModel by viewModels<IssueInfoViewModel> ()
+    override val viewModel by viewModels<IssueInfoViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -39,7 +34,7 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
 
     private fun setupRecycler() {
         commentAdapter = CommentsAdapter().apply {
-            pagedList = viewModel.pagedCommentList
+            pagedList = viewModel.getIssueComments(owner, repo, issue)
             onItemClickListener = { comment ->
                 openReactionDialog(comment)
             }
@@ -55,13 +50,13 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
     }
 
     private fun openReactionDialog(comment: Comment) {
-
         childFragmentManager.commit {
-            add(ReactionsDialogFragment.newInstance(owner, repo, comment.id),
-                    ReactionsDialogFragment.TAG)
+            add(
+                ReactionsDialogFragment.newInstance(owner, repo, comment.id),
+                ReactionsDialogFragment.TAG
+            )
         }
     }
-
 
     companion object {
         private const val ARG_OWNER = "ARG_OWNER"
@@ -69,10 +64,10 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
         private const val ARG_ISSUE = "ARG_ISSUE"
 
         fun newInstance(owner: String, repo: String, issue: Issue) =
-                IssueInfoFragment().apply {
-                    this.owner = owner
-                    this.repo = repo
-                    this.issue = issue
-                }
+            IssueInfoFragment().apply {
+                this.owner = owner
+                this.repo = repo
+                this.issue = issue
+            }
     }
 }

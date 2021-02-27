@@ -15,11 +15,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(SharedPref(this).token == "") {
+        if (SharedPref(this).token.isEmpty()) {
             Navigator.navigateToLogin(supportFragmentManager)
         } else {
             Navigator.navigateToUserInfo(supportFragmentManager, UserProfile.LoggedUser)
         }
-
     }
 }

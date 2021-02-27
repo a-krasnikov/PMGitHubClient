@@ -1,11 +1,9 @@
 package krasnikov.project.pmgithubclient.app.di
 
-import android.content.Context
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.json.Json
 import krasnikov.project.pmgithubclient.app.data.AuthInterceptor
@@ -16,7 +14,6 @@ import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
 import krasnikov.project.pmgithubclient.repo.issue.data.IssueService
 import krasnikov.project.pmgithubclient.search.data.SearchService
 import krasnikov.project.pmgithubclient.userinfo.data.UserService
-import okhttp3.HttpUrl
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Converter
@@ -27,8 +24,6 @@ import javax.inject.Singleton
 @Module
 class NetworkModule {
     companion object {
-        const val SCHEMA = "https"
-        const val HOST = "api.github.com"
         const val API_BASE_URL = "https://api.github.com"
         const val OAUTH_BASE_URL = "https://github.com"
     }
@@ -97,5 +92,4 @@ class NetworkModule {
             .addConverterFactory(converterFactory)
             .build().create(LoginService::class.java)
     }
-
 }

@@ -7,7 +7,6 @@ import krasnikov.project.pmgithubclient.R
 import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
 import krasnikov.project.pmgithubclient.databinding.RecyclerItemIssueBinding
 import krasnikov.project.pmgithubclient.repo.info.data.model.Issue
-import krasnikov.project.pmgithubclient.utils.PagedList
 
 class IssuesAdapter : PagedListAdapter<Issue, IssuesAdapter.IssueViewHolder>() {
 
