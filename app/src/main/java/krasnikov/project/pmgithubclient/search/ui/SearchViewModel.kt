@@ -10,8 +10,6 @@ import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.search.data.SearchService
 import krasnikov.project.pmgithubclient.userinfo.data.model.User
 import krasnikov.project.pmgithubclient.utils.PagedList
-import krasnikov.project.pmgithubclient.utils.Result
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
