@@ -66,10 +66,12 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     private fun showUserRepos(repos: PagedList<Repo>) {
         val adapter = RepositoriesAdapter().apply {
             pagedList = repos
-            onItemClickListener = { viewModel.onRepoClick(it) }
+            onItemClickListener = { viewModel.onRepoClick(it.name, getUserLogin()) }
         }
         binding.rvRepo.adapter = adapter
     }
+
+    private fun getUserLogin() = binding.tvLogin.text.toString()
 
     companion object {
         private const val ARG_USER_PROFILE = "user_profile"

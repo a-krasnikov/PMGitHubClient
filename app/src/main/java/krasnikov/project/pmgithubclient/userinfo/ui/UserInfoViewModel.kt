@@ -12,6 +12,7 @@ import krasnikov.project.pmgithubclient.app.navigation.Navigator
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.userinfo.data.UserInfoRepository
 import krasnikov.project.pmgithubclient.userinfo.data.model.Repo
+import krasnikov.project.pmgithubclient.userinfo.data.model.User
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserInfoModel
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.ErrorType
@@ -58,9 +59,9 @@ class UserInfoViewModel @Inject constructor(
         override suspend fun loadNextData(page: Int) = repository.getUserRepos(userProfile, page)
     }
 
-    fun onRepoClick(repo: Repo) {
+    fun onRepoClick(repo: String, owner: String) {
         _navigationEvent.value = NavigationEvent {
-            Navigator.navigateToRepoInfo(it)
+            Navigator.navigateToRepoInfo(it, owner, repo)
         }
     }
 
