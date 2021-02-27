@@ -55,11 +55,14 @@ class ReactionsDialogFragment : DialogFragment() {
     }
 
     private fun setClickListeners() {
-        binding.btnReactPlusOne.setOnClickListener {
+        /*binding.btnReactPlusOne.setOnClickListener {
             createReaction(ReactionType.PlusOne)
         }
         binding.btnReactMinusOne.setOnClickListener {
             createReaction(ReactionType.MinusOne)
+        }*/
+        binding.rvReactions.setClickCallBack {
+            createReaction(it)
         }
     }
 

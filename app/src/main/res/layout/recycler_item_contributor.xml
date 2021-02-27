@@ -3,19 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_small">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/ivAvatar"
-        android:layout_width="@dimen/recycler_avatar_size"
-        android:layout_height="@dimen/recycler_avatar_size"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         tools:src="@drawable/ic_launcher_foreground" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLogin"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_weight="5"
         tools:text="a-krasnikov" />
 
     <androidx.appcompat.widget.AppCompatTextView
