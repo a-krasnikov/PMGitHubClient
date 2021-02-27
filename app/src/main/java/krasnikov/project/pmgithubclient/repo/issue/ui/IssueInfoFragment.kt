@@ -17,10 +17,9 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
     private var repo by FragmentArgsDelegate<String>(ARG_REPO)
     private var issue by FragmentArgsDelegate<Issue>(ARG_ISSUE)
 
-
     private lateinit var commentAdapter: CommentsAdapter
 
-    override val viewModel by viewModels<IssueInfoViewModel> ()
+    override val viewModel by viewModels<IssueInfoViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,13 +50,13 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
     }
 
     private fun openReactionDialog(comment: Comment) {
-
         childFragmentManager.commit {
-            add(ReactionsDialogFragment.newInstance(owner, repo, comment.id),
-                    ReactionsDialogFragment.TAG)
+            add(
+                ReactionsDialogFragment.newInstance(owner, repo, comment.id),
+                ReactionsDialogFragment.TAG
+            )
         }
     }
-
 
     companion object {
         private const val ARG_OWNER = "ARG_OWNER"
@@ -65,10 +64,10 @@ class IssueInfoFragment : BaseFragment<FragmentIssueInfoBinding, IssueInfoViewMo
         private const val ARG_ISSUE = "ARG_ISSUE"
 
         fun newInstance(owner: String, repo: String, issue: Issue) =
-                IssueInfoFragment().apply {
-                    this.owner = owner
-                    this.repo = repo
-                    this.issue = issue
-                }
+            IssueInfoFragment().apply {
+                this.owner = owner
+                this.repo = repo
+                this.issue = issue
+            }
     }
 }

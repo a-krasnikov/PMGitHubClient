@@ -4,10 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import krasnikov.project.pmgithubclient.app.navigation.Navigator
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentContributorsBinding
-import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
 @AndroidEntryPoint
@@ -33,13 +31,9 @@ class ContributorsFragment : BaseFragment<FragmentContributorsBinding, Contribut
         contributorsAdapter = ContributorsAdapter().apply {
             pagedList = viewModel.loadContributors(owner, repo)
             onItemClickListener = {
-                Navigator.navigateToUserInfo(
-                    requireParentFragment().parentFragmentManager,
-                    UserProfile.User(it.login)
-                )
+                viewModel.navigateToUserInfo(it.login)
             }
         }
-
         binding.rvContributors.adapter = contributorsAdapter
     }
 

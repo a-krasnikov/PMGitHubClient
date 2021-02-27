@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import krasnikov.project.pmgithubclient.app.navigation.Navigator
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentIssuesBinding
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
@@ -33,12 +32,7 @@ class IssuesFragment : BaseFragment<FragmentIssuesBinding, IssuesViewModel>() {
         issuesAdapter = IssuesAdapter().apply {
             pagedList = viewModel.loadIssues(owner, repo)
             onItemClickListener = {
-                Navigator.navigateToIssueInfo(
-                    requireParentFragment().parentFragmentManager,
-                    owner,
-                    repo,
-                    it
-                )
+                viewModel.navigateToIssueInfo(owner, repo, it)
             }
         }
         binding.rvIssues.adapter = issuesAdapter

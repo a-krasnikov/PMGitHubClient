@@ -20,11 +20,15 @@ class ReactionsDialogFragment : DialogFragment() {
     private var repo by FragmentArgsDelegate<String>(ARG_REPO)
 
     private val viewModel: IssueInfoViewModel by viewModels(
-            ownerProducer = {requireParentFragment()}
+        ownerProducer = { requireParentFragment() }
     )
     lateinit var binding: DialogFragmentCommentReactionBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         binding = DialogFragmentCommentReactionBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -38,13 +42,15 @@ class ReactionsDialogFragment : DialogFragment() {
 
     private fun showReactions() {
         viewModel.viewModelScope.launch {
-            binding.tvReactions.text = viewModel.getCommentReactions(owner, repo, commentId).toString()
+            binding.tvReactions.text =
+                viewModel.getCommentReactions(owner, repo, commentId).toString()
         }
     }
 
     private fun createReaction(reactionType: ReactionType) {
         viewModel.viewModelScope.launch {
-            binding.tvReactions.text = viewModel.createCommentReaction(owner, repo, commentId, reactionType).toString()
+            binding.tvReactions.text =
+                viewModel.createCommentReaction(owner, repo, commentId, reactionType).toString()
         }
     }
 
@@ -68,10 +74,10 @@ class ReactionsDialogFragment : DialogFragment() {
         const val TAG = "ReactionsDialogFragment"
 
         fun newInstance(owner: String, repo: String, commentId: Int) =
-                ReactionsDialogFragment().apply {
-                    this.commentId = commentId
-                    this.owner = owner
-                    this.repo = repo
-                }
+            ReactionsDialogFragment().apply {
+                this.commentId = commentId
+                this.owner = owner
+                this.repo = repo
+            }
     }
 }

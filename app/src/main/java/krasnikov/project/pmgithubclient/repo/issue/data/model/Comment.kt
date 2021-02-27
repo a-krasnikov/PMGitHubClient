@@ -6,8 +6,8 @@ import krasnikov.project.pmgithubclient.repo.info.data.model.CommentUser
 
 @Serializable
 data class Comment(
-        @SerialName("id") val id: Int,
-        @SerialName("body") val body: String,
-        @SerialName("user") val user: CommentUser,
-        @SerialName("issue_url") val issueUrl: String) {
-}
+    @SerialName("id") val id: Int,
+    @SerialName("body") val body: String,
+    @SerialName("user") val user: CommentUser,
+    @SerialName("issue_url") val issueUrl: String
+)

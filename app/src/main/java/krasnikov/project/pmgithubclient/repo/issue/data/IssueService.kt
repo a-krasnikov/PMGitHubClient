@@ -31,5 +31,4 @@ interface IssueService {
             @Path("comment_id") commentId: Int,
             @Field("content") reactionContent: String
     ) : Reaction
-
 }

@@ -23,7 +23,6 @@ class ReadMeViewModel @Inject constructor(
     val content
         get() = _content as LiveData<State<ReadMe, Exception>>
 
-
     fun loadReadme(owner: String, repo: String) {
         viewModelScope.launch {
             _content.value = State.Loading

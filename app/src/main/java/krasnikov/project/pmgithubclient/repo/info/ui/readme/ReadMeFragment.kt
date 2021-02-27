@@ -2,6 +2,7 @@ package krasnikov.project.pmgithubclient.repo.info.ui.readme
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
 import krasnikov.project.pmgithubclient.R
@@ -44,6 +45,14 @@ class ReadMeFragment : BaseFragment<FragmentReadmeBinding, ReadMeViewModel>() {
                 }
             }
         }
+    }
+
+    private fun showLoading() {
+        binding.pbLoading.isVisible = true
+    }
+
+    private fun hideLoading() {
+        binding.pbLoading.isVisible = false
     }
 
     companion object {

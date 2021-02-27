@@ -4,5 +4,4 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CommentUser(@SerialName("login") val login: String) {
-}
+data class CommentUser(@SerialName("login") val login: String)
