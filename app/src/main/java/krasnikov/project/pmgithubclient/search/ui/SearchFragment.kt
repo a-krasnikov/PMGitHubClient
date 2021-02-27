@@ -17,7 +17,7 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
 
     private var initQuery by FragmentArgsDelegate<String>(ARG_SEARCH_QUERY)
 
-    override val viewModel by viewModels<SearchViewModel> ()
+    override val viewModel by viewModels<SearchViewModel>()
 
     override fun setupBinding() {
         binding = FragmentSearchBinding.inflate(layoutInflater)
@@ -25,18 +25,14 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         setupSearchToolbar()
         observeContentSearch()
         setupInitQuery()
     }
 
     private fun setupSearchToolbar() {
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
         with(binding.toolbar) {
-            searchToolbar.setNavigationOnClickListener {
-                parentFragmentManager.popBackStack()
-            }
-
             btnSearch.setOnClickListener {
                 searchUser()
             }

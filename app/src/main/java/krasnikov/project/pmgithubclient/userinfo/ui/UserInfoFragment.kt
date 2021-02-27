@@ -2,6 +2,9 @@ package krasnikov.project.pmgithubclient.userinfo.ui
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,6 +29,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupSearchToolbar()
         viewModel.loadUserInfo(userProfile)
         observeUserContent()
     }
@@ -72,6 +76,34 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     }
 
     private fun getUserLogin() = binding.tvLogin.text.toString()
+
+    private fun setupSearchToolbar() {
+        (requireActivity() as AppCompatActivity).supportActionBar?.hide()
+        with(binding.toolbar) {
+            btnSearch.setOnClickListener {
+                searchUser()
+            }
+
+            etQuery.setOnEditorActionListener { _, actionId, _ ->
+                when (actionId) {
+                    EditorInfo.IME_ACTION_SEARCH -> {
+                        searchUser()
+                        true
+                    }
+                    else -> false
+                }
+            }
+        }
+    }
+
+    private fun searchUser() {
+        with(binding.toolbar.etQuery) {
+            clearFocus()
+            (requireActivity().getSystemService(android.content.Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+                .hideSoftInputFromWindow(this.windowToken, 0)
+            viewModel.navigateToSearch(text.toString())
+        }
+    }
 
     companion object {
         private const val ARG_USER_PROFILE = "user_profile"
