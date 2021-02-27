@@ -20,8 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-        private val authHelper: AuthHelper,
-        private val pref: SharedPref
+    private val authHelper: AuthHelper,
+    private val pref: SharedPref
 ) : BaseViewModel() {
 
     private val _content = MutableLiveData<State<Unit, ErrorType>>()
@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor(
 
     private fun navigateToUserInfo() {
         _navigationEvent.value =
-                NavigationEvent { Navigator.navigateToUserInfo(it, UserProfile.LoggedUser) }
+            NavigationEvent { Navigator.navigateToUserInfo(it, UserProfile.LoggedUser) }
     }
 
     private fun getAccessToken(code: String) {
@@ -54,7 +54,6 @@ class LoginViewModel @Inject constructor(
                     _content.value = State.Content(Unit)
                     navigateToUserInfo()
                 }
-                //TODO Error
                 is Result.Error -> when (result.exception) {
                     is NetworkRequestException -> {
                         _content.value = State.Error(ErrorType.AccessTokenError)
