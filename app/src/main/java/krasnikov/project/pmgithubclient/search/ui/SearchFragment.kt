@@ -9,22 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import dagger.hilt.android.AndroidEntryPoint
 import krasnikov.project.pmgithubclient.app.di.AppComponent
 import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentSearchBinding
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
+@AndroidEntryPoint
 class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
 
     private var initQuery by FragmentArgsDelegate<String>(ARG_SEARCH_QUERY)
 
-    override val viewModel by viewModels<SearchViewModel> {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-                return SearchViewModel(AppComponent.searchService) as T
-            }
-        }
-    }
+    override val viewModel by viewModels<SearchViewModel> ()
 
     override fun setupBinding() {
         binding = FragmentSearchBinding.inflate(layoutInflater)

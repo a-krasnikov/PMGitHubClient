@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import krasnikov.project.pmgithubclient.app.data.exception.NetworkRequestException
 import krasnikov.project.pmgithubclient.app.data.exception.RequestNotAuthorizedException
@@ -18,9 +19,10 @@ import krasnikov.project.pmgithubclient.utils.ErrorType
 import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.Result
 import krasnikov.project.pmgithubclient.utils.State
+import javax.inject.Inject
 
-class UserInfoViewModel(
-    private val userProfile: UserProfile,
+@HiltViewModel
+class UserInfoViewModel @Inject constructor(
     private val repository: UserInfoRepository
 ) : BaseViewModel() {
 
@@ -28,18 +30,13 @@ class UserInfoViewModel(
     val contentUser
         get() = _contentUser as LiveData<State<UserInfoModel, ErrorType>>
 
-    init {
-        loadUserInfo()
-    }
-
-    private fun loadUserInfo() {
-
+    fun loadUserInfo(userProfile: UserProfile) {
         viewModelScope.launch {
             _contentUser.value = State.Loading
             when (val userResult = repository.getUser(userProfile)) {
                 is Result.Success -> {
                     _contentUser.value =
-                        State.Content(UserInfoModel(userResult.data, loadRepos()))
+                        State.Content(UserInfoModel(userResult.data, loadRepos(userProfile)))
                 }
                 is Result.Error -> {
                     when (userResult.exception) {
@@ -61,7 +58,7 @@ class UserInfoViewModel(
     private fun loadRepos() = object : PagedList<Repo>(viewModelScope) {
         override suspend fun loadNextData(page: Int) = repository.getUserRepos(userProfile, page)
     }
-
+  
     fun onRepoClick(repo: Repo) {
         _navigationEvent.value = NavEvent {
             Navigator.navigateToRepoInfo(it)

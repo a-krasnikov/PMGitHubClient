@@ -14,6 +14,7 @@ interface IssueService {
             @Query("page") page: Int
     ): List<Comment>
 
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview+json")
     @GET("/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions")
     suspend fun getIssueCommentReactions(
             @Path("owner") owner: String,
@@ -21,6 +22,7 @@ interface IssueService {
             @Path("comment_id") commentId: Int
     ): List<Reaction>
 
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview+json")
     @POST("/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions")
     @FormUrlEncoded
     suspend fun createIssueCommentReaction(

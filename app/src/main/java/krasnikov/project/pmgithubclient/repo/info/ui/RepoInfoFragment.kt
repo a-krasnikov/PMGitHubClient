@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 import krasnikov.project.pmgithubclient.databinding.FragmentRepoInfoBinding
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 
+@AndroidEntryPoint
 class RepoInfoFragment : Fragment() {
 
     var owner by FragmentArgsDelegate<String>(ARG_OWNER)
