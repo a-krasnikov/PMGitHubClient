@@ -30,7 +30,7 @@ class NetworkModule {
 
     @Provides
     fun provideConverterFactory(): Converter.Factory {
-        return Json { ignoreUnknownKeys = true }
+        return Json { ignoreUnknownKeys = true; coerceInputValues = true }
             .asConverterFactory("application/json".toMediaType())
     }
 
