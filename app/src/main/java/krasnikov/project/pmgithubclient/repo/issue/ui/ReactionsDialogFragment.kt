@@ -8,7 +8,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.databinding.DialogFragmentCommentReactionBinding
 import krasnikov.project.pmgithubclient.repo.issue.data.model.Reaction
 import krasnikov.project.pmgithubclient.repo.issue.data.model.ReactionType
@@ -44,14 +46,19 @@ class ReactionsDialogFragment : DialogFragment() {
     private fun showReactions() {
         viewModel.getScope().launch {
             val reactions = viewModel.getCommentReactions(owner, repo, commentId)
-            binding.rvReactions.updateReactions(reactions)
+            withContext(Dispatchers.Main) {
+                binding.rvReactions.updateReactions(reactions)
+            }
+
         }
     }
 
     private fun createReaction(reactionType: ReactionType) {
         viewModel.getScope().launch {
             val reactions = viewModel.createCommentReaction(owner, repo, commentId, Reaction(reactionType.content))
-            binding.rvReactions.updateReactions(reactions)
+            withContext(Dispatchers.Main) {
+                binding.rvReactions.updateReactions(reactions)
+            }
         }
     }
 
