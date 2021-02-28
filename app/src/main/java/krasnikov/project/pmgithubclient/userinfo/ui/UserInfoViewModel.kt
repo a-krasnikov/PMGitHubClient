@@ -32,31 +32,15 @@ class UserInfoViewModel @Inject constructor(
         get() = _contentUser as LiveData<State<UserInfoModel, ErrorType>>
 
     fun loadUserInfo(userProfile: UserProfile) {
-        viewModelScope.launch {
-            _contentUser.value = State.Loading
-            when (val userResult = repository.getUser(userProfile)) {
-                is Result.Success -> {
-                    _contentUser.value =
-                        State.Content(UserInfoModel(userResult.data, loadRepos(userProfile)))
-                }
-                is Result.Error -> {
-                    when (userResult.exception) {
-                        is RequestNotAuthorizedException -> {
-                            navigateToLogin()
-                        }
-                        is NetworkRequestException -> {
-                            _contentUser.value = State.Error(ErrorType.UserNotLoadedError)
-                        }
-                        else -> {
-                            _contentUser.value = State.Error(ErrorType.UnknownError)
-                        }
-                    }
-                }
-            }
+        baseViewModelScope.launch(CoroutineName(userCoroutineName)) {
+            _contentUser.postValue(State.Loading)
+            val userResult = repository.getUser(userProfile)
+            _contentUser.postValue(State.Content(UserInfoModel(userResult, loadRepos(userProfile))))
+
         }
     }
 
-    private fun loadRepos(userProfile: UserProfile) = object : PagedList<Repo>(viewModelScope) {
+    private fun loadRepos(userProfile: UserProfile) = object : PagedList<Repo>(baseViewModelScope) {
         override suspend fun loadNextData(page: Int) = repository.getUserRepos(userProfile, page)
     }
 
@@ -79,6 +63,23 @@ class UserInfoViewModel @Inject constructor(
     }
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
-        TODO("Not yet implemented")
+        super.handleError(throwable, coroutineName)
+
+        when (throwable) {
+            is NetworkRequestException -> {
+                if (coroutineName.toString() == userCoroutineName) {
+                    _contentUser.postValue(State.Error(ErrorType.UserNotLoadedError))
+                } else {
+                    _contentUser.postValue(State.Error(ErrorType.ReposNotLoadedError))
+                }
+            }
+            else -> {
+                _contentUser.postValue(State.Error(ErrorType.UnknownError))
+            }
+        }
+    }
+
+    private companion object {
+        const val userCoroutineName = "user_coroutine"
     }
 }

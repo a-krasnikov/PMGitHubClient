@@ -19,12 +19,18 @@ class ContributorsViewModel @Inject constructor(
     private val repositoryService: RepositoryService
 ) : BaseViewModel() {
 
-    fun loadContributors(owner: String, repo: String) =
-        object : PagedList<Contributor>(viewModelScope) {
+    private lateinit var _contributors: PagedList<Contributor>
+
+    fun loadContributors(owner: String, repo: String): PagedList<Contributor> {
+        _contributors = object : PagedList<Contributor>(baseViewModelScope) {
             override suspend fun loadNextData(page: Int) = withContext(Dispatchers.IO) {
                 repositoryService.getContributors(owner, repo, page)
             }
         }
+
+        return _contributors
+    }
+
 
     fun navigateToUserInfo(login: String) {
         _navigationEvent.value =
@@ -32,6 +38,7 @@ class ContributorsViewModel @Inject constructor(
     }
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
-        TODO("Not yet implemented")
+        super.handleError(throwable, coroutineName)
+        _contributors.notifyError(Exception(throwable))
     }
 }

@@ -13,6 +13,7 @@ import krasnikov.project.pmgithubclient.repo.issue.data.model.Reaction
 import krasnikov.project.pmgithubclient.repo.issue.data.model.ReactionType
 import krasnikov.project.pmgithubclient.repo.info.data.model.Issue
 import krasnikov.project.pmgithubclient.utils.PagedList
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,10 +21,15 @@ class IssueInfoViewModel @Inject constructor(
     private val issueService: IssueService
 ) : BaseViewModel() {
 
-    fun getIssueComments(owner: String, repo: String, issue: Issue) =
-        object : PagedList<Comment>(viewModelScope) {
+    private lateinit var _comments: PagedList<Comment>
+
+    fun getIssueComments(owner: String, repo: String, issue: Issue): PagedList<Comment> {
+        _comments = object : PagedList<Comment>(baseViewModelScope) {
             override suspend fun loadNextData(page: Int) = issueService.getIssueComments(owner, repo, issue.number, page)
         }
+        return _comments
+    }
+
 
     suspend fun getCommentReactions(owner: String, repo: String, commentId: Int): List<Reaction> {
         return withContext(Dispatchers.IO) {
@@ -44,6 +50,7 @@ class IssueInfoViewModel @Inject constructor(
     }
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
-        TODO("Not yet implemented")
+        super.handleError(throwable, coroutineName)
+        _comments.notifyError(Exception(throwable))
     }
 }

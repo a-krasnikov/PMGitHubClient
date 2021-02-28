@@ -44,7 +44,6 @@ class ReactionsDialogFragment : DialogFragment() {
     private fun showReactions() {
         viewModel.viewModelScope.launch {
             val reactions = viewModel.getCommentReactions(owner, repo, commentId)
-            //binding.tvReactions.text = reactions.toString()
             binding.rvReactions.updateReactions(reactions)
         }
     }
@@ -52,7 +51,6 @@ class ReactionsDialogFragment : DialogFragment() {
     private fun createReaction(reactionType: ReactionType) {
         viewModel.viewModelScope.launch {
             val reactions = viewModel.createCommentReaction(owner, repo, commentId, Reaction(reactionType.content))
-            //binding.tvReactions.text = reactions.toString()
             binding.rvReactions.updateReactions(reactions)
         }
     }

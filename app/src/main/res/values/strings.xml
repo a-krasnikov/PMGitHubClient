@@ -23,7 +23,7 @@
     <string name="reaction_and_count">%1s%2d</string>
 
     <!-- Errors -->
-    <string name="error_network">Network error</string>
+    <string name="error_readme">No README was found</string>
     <string name="error_issue_comments">Issue comments error</string>
     <string name="error_access_token">AccessToken error</string>
     <string name="error_repos_not_loaded">Repos Not Loaded Error</string>

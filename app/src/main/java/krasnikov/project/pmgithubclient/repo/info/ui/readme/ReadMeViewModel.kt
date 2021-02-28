@@ -8,9 +8,11 @@ import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import krasnikov.project.pmgithubclient.app.data.exception.NetworkRequestException
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
 import krasnikov.project.pmgithubclient.repo.info.data.RepositoryService
 import krasnikov.project.pmgithubclient.repo.info.data.model.ReadMe
+import krasnikov.project.pmgithubclient.utils.ErrorType
 import krasnikov.project.pmgithubclient.utils.State
 import java.lang.Exception
 import javax.inject.Inject
@@ -20,25 +22,28 @@ class ReadMeViewModel @Inject constructor(
     private val repositoryService: RepositoryService
 ) : BaseViewModel() {
 
-    private val _content = MutableLiveData<State<ReadMe, Exception>>()
+    private val _content = MutableLiveData<State<ReadMe, ErrorType>>()
     val content
-        get() = _content as LiveData<State<ReadMe, Exception>>
+        get() = _content as LiveData<State<ReadMe, ErrorType>>
 
     fun loadReadme(owner: String, repo: String) {
-        viewModelScope.launch {
+        baseViewModelScope.launch {
             _content.value = State.Loading
             withContext(Dispatchers.IO) {
-                try {
-                    _content.postValue(State.Content(repositoryService.getReadMe(owner, repo)))
-                } catch (ex: Exception) {
-                    //TODO Error
-                    _content.postValue(State.Error(ex))
-                }
+                _content.postValue(State.Content(repositoryService.getReadMe(owner, repo)))
             }
         }
     }
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
-        TODO("Not yet implemented")
+        super.handleError(throwable, coroutineName)
+        when(throwable) {
+            is NetworkRequestException -> {
+                _content.postValue(State.Error(ErrorType.NoReadMeError))
+            }
+            else ->  {
+                _content.postValue(State.Error(ErrorType.UnknownError))
+            }
+        }
     }
 }

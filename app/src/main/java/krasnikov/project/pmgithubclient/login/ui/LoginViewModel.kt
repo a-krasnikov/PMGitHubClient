@@ -46,28 +46,26 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun getAccessToken(code: String) {
-        viewModelScope.launch {
+        baseViewModelScope.launch() {
             _content.value = State.Loading
-            when (val result = authHelper.getAccessToken(code)) {
-                is Result.Success -> {
-                    //save token
-                    pref.token = "${result.data.tokenType} ${result.data.accessToken}"
-                    _content.value = State.Content(Unit)
-                    navigateToUserInfo()
-                }
-                is Result.Error -> when (result.exception) {
-                    is NetworkRequestException -> {
-                        _content.value = State.Error(ErrorType.AccessTokenError)
-                    }
-                    else -> {
-                        _content.value = State.Error(ErrorType.UnknownError)
-                    }
-                }
-            }
+            val result = authHelper.getAccessToken(code)
+
+            //save token
+            pref.token = "${result.tokenType} ${result.accessToken}"
+            _content.value = State.Content(Unit)
+            navigateToUserInfo()
         }
     }
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
-        TODO("Not yet implemented")
+        super.handleError(throwable, coroutineName)
+        when(throwable) {
+            is NetworkRequestException -> {
+                _content.postValue(State.Error(ErrorType.AccessTokenError))
+            }
+            else -> {
+                _content.postValue(State.Error(ErrorType.UnknownError))
+            }
+        }
     }
 }
