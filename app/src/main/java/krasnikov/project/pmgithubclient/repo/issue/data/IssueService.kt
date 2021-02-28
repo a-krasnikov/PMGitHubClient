@@ -24,11 +24,10 @@ interface IssueService {
 
     @Headers("Accept: application/vnd.github.squirrel-girl-preview+json")
     @POST("/repos/{owner}/{repo}/issues/comments/{comment_id}/reactions")
-    @FormUrlEncoded
     suspend fun createIssueCommentReaction(
             @Path("owner") owner: String,
             @Path("repo") repo: String,
             @Path("comment_id") commentId: Int,
-            @Field("content") reactionContent: String
+            @Body reactionContent: Reaction
     ) : Reaction
 }

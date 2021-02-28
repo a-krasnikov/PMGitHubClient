@@ -1,6 +1,7 @@
 package krasnikov.project.pmgithubclient.repo.info.ui.readme
 
 import android.os.Bundle
+import android.util.Base64
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -10,6 +11,8 @@ import krasnikov.project.pmgithubclient.app.ui.base.BaseFragment
 import krasnikov.project.pmgithubclient.databinding.FragmentReadmeBinding
 import krasnikov.project.pmgithubclient.utils.FragmentArgsDelegate
 import krasnikov.project.pmgithubclient.utils.State
+import java.nio.charset.StandardCharsets
+import java.util.*
 
 @AndroidEntryPoint
 class ReadMeFragment : BaseFragment<FragmentReadmeBinding, ReadMeViewModel>() {
@@ -37,7 +40,8 @@ class ReadMeFragment : BaseFragment<FragmentReadmeBinding, ReadMeViewModel>() {
                 }
                 is State.Content -> {
                     hideLoading()
-                    binding.tvText.text = it.data.content
+                    val readMe = String(Base64.decode(it.data.content, Base64.DEFAULT) ,StandardCharsets.UTF_8)
+                    binding.tvText.text = readMe
                 }
                 is State.Error -> {
                     hideLoading()
