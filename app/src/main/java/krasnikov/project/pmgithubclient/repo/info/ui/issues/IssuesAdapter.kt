@@ -30,6 +30,7 @@ class IssuesAdapter : PagedListAdapter<Issue, IssuesAdapter.IssueViewHolder>() {
 
         fun bind(issue: Issue) {
             with(binding) {
+                tvUser.text = issue.user.login
                 tvTitle.text = issue.title
                 tvNumber.text = resources.getString(R.string.text_issue_number, issue.number)
                 tvBody.text = issue.body
