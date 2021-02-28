@@ -28,7 +28,7 @@ class ContributorsFragment : BaseFragment<FragmentContributorsBinding, Contribut
     }
 
     private fun setupRecycler() {
-        contributorsAdapter = ContributorsAdapter().apply {
+        contributorsAdapter = ContributorsAdapter(binding.rvContributors.handler).apply {
             pagedList = viewModel.loadContributors(owner, repo)
             onItemClickListener = {
                 viewModel.navigateToUserInfo(it.login)

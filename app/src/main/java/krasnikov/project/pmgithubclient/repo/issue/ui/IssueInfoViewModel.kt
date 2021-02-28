@@ -3,6 +3,7 @@ package krasnikov.project.pmgithubclient.repo.issue.ui
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
@@ -40,5 +41,9 @@ class IssueInfoViewModel @Inject constructor(
             issueService.createIssueCommentReaction(owner, repo, commentId, reaction)
         }
         return getCommentReactions(owner, repo, commentId)
+    }
+
+    override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
+        TODO("Not yet implemented")
     }
 }

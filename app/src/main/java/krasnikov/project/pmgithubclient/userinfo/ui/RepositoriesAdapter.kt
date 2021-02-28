@@ -1,5 +1,6 @@
 package krasnikov.project.pmgithubclient.userinfo.ui
 
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,7 +8,8 @@ import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
 import krasnikov.project.pmgithubclient.databinding.RecyclerItemRepoBinding
 import krasnikov.project.pmgithubclient.userinfo.data.model.Repo
 
-class RepositoriesAdapter : PagedListAdapter<Repo, RepositoriesAdapter.RepoViewHolder>() {
+class RepositoriesAdapter(rvHandler: Handler) :
+    PagedListAdapter<Repo, RepositoriesAdapter.RepoViewHolder>(rvHandler) {
 
     override fun onCreateViewHolder(parent: ViewGroup): RepoViewHolder {
         return RepoViewHolder(

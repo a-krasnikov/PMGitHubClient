@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.launch
 import krasnikov.project.pmgithubclient.app.data.exception.NetworkRequestException
 import krasnikov.project.pmgithubclient.app.data.exception.RequestNotAuthorizedException
@@ -75,5 +76,9 @@ class UserInfoViewModel @Inject constructor(
         _navigationEvent.value = NavigationEvent {
             Navigator.navigateToLogin(it)
         }
+    }
+
+    override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
+        TODO("Not yet implemented")
     }
 }

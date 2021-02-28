@@ -1,5 +1,6 @@
 package krasnikov.project.pmgithubclient.repo.info.ui.contributors
 
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,8 +10,8 @@ import krasnikov.project.pmgithubclient.databinding.RecyclerItemContributorBindi
 import krasnikov.project.pmgithubclient.repo.info.data.model.Contributor
 import krasnikov.project.pmgithubclient.utils.load
 
-class ContributorsAdapter :
-    PagedListAdapter<Contributor, ContributorsAdapter.ContributorViewHolder>() {
+class ContributorsAdapter(rvHandler: Handler) :
+    PagedListAdapter<Contributor, ContributorsAdapter.ContributorViewHolder>(rvHandler) {
 
     override fun onCreateViewHolder(parent: ViewGroup): ContributorViewHolder {
         return ContributorViewHolder(

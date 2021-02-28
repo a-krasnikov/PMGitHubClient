@@ -56,12 +56,13 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
 
     private fun observeContentSearch() {
         viewModel.contentSearch.observe(viewLifecycleOwner) {
-            binding.rvSearch.adapter = UsersAdapter().apply {
+            with(binding.rvSearch){
+                adapter = UsersAdapter(handler).apply {
                 pagedList = it
                 onItemClickListener = {
                     viewModel.navigateToUserInfo(it.login)
                 }
-            }
+            }}
         }
     }
 

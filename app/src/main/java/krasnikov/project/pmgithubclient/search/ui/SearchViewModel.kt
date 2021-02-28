@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.navigation.NavigationEvent
@@ -13,10 +14,12 @@ import krasnikov.project.pmgithubclient.search.data.SearchService
 import krasnikov.project.pmgithubclient.userinfo.data.model.User
 import krasnikov.project.pmgithubclient.userinfo.data.model.UserProfile
 import krasnikov.project.pmgithubclient.utils.PagedList
+import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel @Inject constructor(private val searchService: SearchService) : BaseViewModel() {
+class SearchViewModel @Inject constructor(private val searchService: SearchService) :
+    BaseViewModel() {
 
     private val _contentSearch = MutableLiveData<PagedList<User>>()
     val contentSearch
@@ -24,7 +27,7 @@ class SearchViewModel @Inject constructor(private val searchService: SearchServi
 
     fun searchUser(query: String) {
         if (query.trim().isNotEmpty()) {
-            _contentSearch.value = object : PagedList<User>(viewModelScope) {
+            _contentSearch.value = object : PagedList<User>(baseViewModelScope) {
                 override suspend fun loadNextData(page: Int): List<User> =
                     withContext(Dispatchers.IO) {
                         searchService.searchUsers(query, page).items
@@ -36,5 +39,9 @@ class SearchViewModel @Inject constructor(private val searchService: SearchServi
     fun navigateToUserInfo(login: String) {
         _navigationEvent.value =
             NavigationEvent { Navigator.navigateToUserInfo(it, UserProfile.User(login)) }
+    }
+
+    override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
+        _contentSearch.value?.notifyError(Exception(throwable))
     }
 }

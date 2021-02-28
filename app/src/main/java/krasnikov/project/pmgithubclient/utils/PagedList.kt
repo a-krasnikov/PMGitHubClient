@@ -22,19 +22,18 @@ abstract class PagedList<T>(private val coroutineScope: CoroutineScope) {
         if (loadJob?.isActive == true) return
 
         if (canLoadMore) {
-            loadJob = coroutineScope.launch {
-                try {
-                    val newData = loadNextData(nextPage)
-                    set.addAll(newData)
-                    nextPage++
-                    canLoadMore = newData.isNotEmpty()
-                    stateLoadedListener(State.Content(set.toList()))
-                } catch (ex: Exception) {
-                    //TODO Error
-                    stateLoadedListener(State.Error(ex))
-                }
+            loadJob = coroutineScope.launch(CoroutineName("PagedListCoroutine")) {
+                val newData = loadNextData(nextPage)
+                set.addAll(newData)
+                nextPage++
+                canLoadMore = newData.isNotEmpty()
+                stateLoadedListener(State.Content(set.toList()))
             }
         }
+    }
+
+    fun notifyError(ex: Exception) {
+        stateLoadedListener(State.Error(ex))
     }
 
     abstract suspend fun loadNextData(page: Int): List<T>

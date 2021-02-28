@@ -1,5 +1,6 @@
 package krasnikov.project.pmgithubclient.app.ui.base
 
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -8,10 +9,22 @@ import krasnikov.project.pmgithubclient.databinding.RecyclerLoadStateFooterBindi
 import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.State
 
-abstract class PagedListAdapter<T, VH : RecyclerView.ViewHolder> :
+abstract class PagedListAdapter<T, VH : RecyclerView.ViewHolder>(private val rvHandler: Handler) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var currentList = emptyList<T>()
+        set(value) {
+            val startPosition = listSize
+            val countNewItems = value.size - startPosition
+            if (countNewItems != 0) {
+                field = value
+                currentState = LoadState.NotLoading
+                rvHandler.post { notifyItemRangeChanged(startPosition, countNewItems) }
+            } else {
+                endOfPaginationReached = true
+                currentState = LoadState.NotLoading
+            }
+        }
 
     private val listSize
         get() = currentList.size
@@ -22,29 +35,21 @@ abstract class PagedListAdapter<T, VH : RecyclerView.ViewHolder> :
         when (it) {
             is State.Loading -> {
                 currentState = LoadState.Loading
-                notifyItemChanged(itemCount - 1)
             }
             is State.Content -> {
-                val startPosition = listSize
-                val count = it.data.size - startPosition
-                if (count != 0) {
-                    currentList = it.data
-                    currentState = LoadState.NotLoading
-                    notifyItemRangeChanged(startPosition, count)
-                } else {
-                    endOfPaginationReached = true
-                    currentState = LoadState.NotLoading
-                    notifyItemChanged(itemCount - 1)
-                }
+                currentList = it.data
             }
             is State.Error -> {
                 currentState = LoadState.Error(it.error)
-                notifyItemChanged(itemCount - 1)
             }
         }
     }
 
     private var currentState: LoadState = LoadState.NotLoading
+        set(value) {
+            field = value
+            rvHandler.post { notifyItemChanged(itemCount - 1) }
+        }
 
     var pagedList: PagedList<T>? = null
         set(value) {
