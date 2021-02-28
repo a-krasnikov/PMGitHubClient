@@ -4,6 +4,7 @@ package krasnikov.project.pmgithubclient.repo.issue.ui
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.ui.base.BaseViewModel
@@ -30,6 +31,9 @@ class IssueInfoViewModel @Inject constructor(
         return _comments
     }
 
+    fun getScope(): CoroutineScope {
+        return baseViewModelScope
+    }
 
     suspend fun getCommentReactions(owner: String, repo: String, commentId: Int): List<Reaction> {
         return withContext(Dispatchers.IO) {

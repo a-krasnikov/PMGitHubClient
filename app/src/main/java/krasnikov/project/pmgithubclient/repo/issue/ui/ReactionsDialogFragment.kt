@@ -42,14 +42,14 @@ class ReactionsDialogFragment : DialogFragment() {
     }
 
     private fun showReactions() {
-        viewModel.viewModelScope.launch {
+        viewModel.getScope().launch {
             val reactions = viewModel.getCommentReactions(owner, repo, commentId)
             binding.rvReactions.updateReactions(reactions)
         }
     }
 
     private fun createReaction(reactionType: ReactionType) {
-        viewModel.viewModelScope.launch {
+        viewModel.getScope().launch {
             val reactions = viewModel.createCommentReaction(owner, repo, commentId, Reaction(reactionType.content))
             binding.rvReactions.updateReactions(reactions)
         }

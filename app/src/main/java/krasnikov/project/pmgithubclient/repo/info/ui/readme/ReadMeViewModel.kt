@@ -28,7 +28,7 @@ class ReadMeViewModel @Inject constructor(
 
     fun loadReadme(owner: String, repo: String) {
         baseViewModelScope.launch {
-            _content.value = State.Loading
+            _content.postValue(State.Loading)
             withContext(Dispatchers.IO) {
                 _content.postValue(State.Content(repositoryService.getReadMe(owner, repo)))
             }

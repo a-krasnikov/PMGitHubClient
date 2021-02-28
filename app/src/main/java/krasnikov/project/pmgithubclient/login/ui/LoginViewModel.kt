@@ -41,25 +41,27 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun navigateToUserInfo() {
-        _navigationEvent.value =
-            NavigationEvent { Navigator.navigateToUserInfo(it, UserProfile.LoggedUser) }
+        _navigationEvent.postValue(NavigationEvent {
+            Navigator.navigateToUserInfo(
+                it,
+                UserProfile.LoggedUser
+            )
+        })
     }
 
     private fun getAccessToken(code: String) {
         baseViewModelScope.launch() {
-            _content.value = State.Loading
+            _content.postValue(State.Loading)
             val result = authHelper.getAccessToken(code)
-
-            //save token
             pref.token = "${result.tokenType} ${result.accessToken}"
-            _content.value = State.Content(Unit)
+            _content.postValue(State.Content(Unit))
             navigateToUserInfo()
         }
     }
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
         super.handleError(throwable, coroutineName)
-        when(throwable) {
+        when (throwable) {
             is NetworkRequestException -> {
                 _content.postValue(State.Error(ErrorType.AccessTokenError))
             }

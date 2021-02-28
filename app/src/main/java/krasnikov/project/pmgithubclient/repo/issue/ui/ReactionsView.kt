@@ -18,15 +18,6 @@ class ReactionsView @JvmOverloads constructor(
     defStyleRes: Int = 0
 ) : ConstraintLayout(context, attributeSet, defStyleAttrs, defStyleRes) {
 
-    /*private val tvPlusOne: AppCompatTextView
-    private val tvMinusOne: AppCompatTextView
-    private val tvLaugh: AppCompatTextView
-    private val tvConfused: AppCompatTextView
-    private val tvHeart: AppCompatTextView
-    private val tvHooray: AppCompatTextView
-    private val tvRocket: AppCompatTextView
-    private val tvEyes: AppCompatTextView*/
-
     private val binding: ViewReactionsBinding
 
     private var clickCallBack: (ReactionType) -> (Unit) = { _ -> }
