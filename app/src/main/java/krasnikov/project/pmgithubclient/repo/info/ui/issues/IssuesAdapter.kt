@@ -1,6 +1,5 @@
 package krasnikov.project.pmgithubclient.repo.info.ui.issues
 
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,8 +8,7 @@ import krasnikov.project.pmgithubclient.app.ui.base.PagedListAdapter
 import krasnikov.project.pmgithubclient.databinding.RecyclerItemIssueBinding
 import krasnikov.project.pmgithubclient.repo.info.data.model.Issue
 
-class IssuesAdapter(rvHandler: Handler) :
-    PagedListAdapter<Issue, IssuesAdapter.IssueViewHolder>(rvHandler) {
+class IssuesAdapter : PagedListAdapter<Issue, IssuesAdapter.IssueViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup): IssueViewHolder {
         return IssueViewHolder(
