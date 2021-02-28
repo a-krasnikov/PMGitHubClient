@@ -10,9 +10,8 @@
         android:id="@+id/tvRepoName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/repo_title_info_text_size"
         android:layout_margin="@dimen/margin_medium"
-        />
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
