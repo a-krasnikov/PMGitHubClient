@@ -2,6 +2,7 @@ package krasnikov.project.pmgithubclient.repo.info.ui.issues
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.navigation.NavigationEvent
@@ -27,5 +28,9 @@ class IssuesViewModel @Inject constructor(
     fun navigateToIssueInfo(owner: String, repo: String, issue: Issue) {
         _navigationEvent.value =
             NavigationEvent { Navigator.navigateToIssueInfo(it, owner, repo, issue) }
+    }
+
+    override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
+        TODO("Not yet implemented")
     }
 }

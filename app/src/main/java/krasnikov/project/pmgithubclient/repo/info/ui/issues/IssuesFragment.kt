@@ -29,7 +29,7 @@ class IssuesFragment : BaseFragment<FragmentIssuesBinding, IssuesViewModel>() {
     }
 
     private fun setupRecycler() {
-        issuesAdapter = IssuesAdapter().apply {
+        issuesAdapter = IssuesAdapter(binding.rvIssues.handler).apply {
             pagedList = viewModel.loadIssues(owner, repo)
             onItemClickListener = {
                 viewModel.navigateToIssueInfo(owner, repo, it)
