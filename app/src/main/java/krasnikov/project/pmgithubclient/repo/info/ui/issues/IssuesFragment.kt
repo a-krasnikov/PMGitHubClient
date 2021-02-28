@@ -1,6 +1,8 @@
 package krasnikov.project.pmgithubclient.repo.info.ui.issues
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +31,7 @@ class IssuesFragment : BaseFragment<FragmentIssuesBinding, IssuesViewModel>() {
     }
 
     private fun setupRecycler() {
-        issuesAdapter = IssuesAdapter(binding.rvIssues.handler).apply {
+        issuesAdapter = IssuesAdapter().apply {
             pagedList = viewModel.loadIssues(owner, repo)
             onItemClickListener = {
                 viewModel.navigateToIssueInfo(owner, repo, it)

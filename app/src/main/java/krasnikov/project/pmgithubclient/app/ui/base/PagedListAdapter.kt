@@ -1,6 +1,7 @@
 package krasnikov.project.pmgithubclient.app.ui.base
 
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -9,8 +10,10 @@ import krasnikov.project.pmgithubclient.databinding.RecyclerLoadStateFooterBindi
 import krasnikov.project.pmgithubclient.utils.PagedList
 import krasnikov.project.pmgithubclient.utils.State
 
-abstract class PagedListAdapter<T, VH : RecyclerView.ViewHolder>(private val rvHandler: Handler) :
+abstract class PagedListAdapter<T, VH : RecyclerView.ViewHolder> :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    private val mainHandler: Handler = Handler(Looper.getMainLooper())
 
     private var currentList = emptyList<T>()
         set(value) {
@@ -19,7 +22,7 @@ abstract class PagedListAdapter<T, VH : RecyclerView.ViewHolder>(private val rvH
             if (countNewItems != 0) {
                 field = value
                 currentState = LoadState.NotLoading
-                rvHandler.post { notifyItemRangeChanged(startPosition, countNewItems) }
+                mainHandler.post { notifyItemRangeChanged(startPosition, countNewItems) }
             } else {
                 endOfPaginationReached = true
                 currentState = LoadState.NotLoading
@@ -48,7 +51,7 @@ abstract class PagedListAdapter<T, VH : RecyclerView.ViewHolder>(private val rvH
     private var currentState: LoadState = LoadState.NotLoading
         set(value) {
             field = value
-            rvHandler.post { notifyItemChanged(itemCount - 1) }
+            mainHandler.post { notifyItemChanged(itemCount - 1) }
         }
 
     var pagedList: PagedList<T>? = null

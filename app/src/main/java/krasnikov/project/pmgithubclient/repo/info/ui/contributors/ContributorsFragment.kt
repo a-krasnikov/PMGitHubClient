@@ -1,6 +1,8 @@
 package krasnikov.project.pmgithubclient.repo.info.ui.contributors
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +30,7 @@ class ContributorsFragment : BaseFragment<FragmentContributorsBinding, Contribut
     }
 
     private fun setupRecycler() {
-        contributorsAdapter = ContributorsAdapter(binding.rvContributors.handler).apply {
+        contributorsAdapter = ContributorsAdapter().apply {
             pagedList = viewModel.loadContributors(owner, repo)
             onItemClickListener = {
                 viewModel.navigateToUserInfo(it.login)

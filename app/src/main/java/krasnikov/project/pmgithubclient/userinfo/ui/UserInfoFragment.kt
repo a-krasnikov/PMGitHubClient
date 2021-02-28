@@ -68,7 +68,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     }
 
     private fun showUserRepos(repos: PagedList<Repo>) {
-        val adapter = RepositoriesAdapter(binding.rvRepo.handler).apply {
+        val adapter = RepositoriesAdapter().apply {
             pagedList = repos
             onItemClickListener = { viewModel.onRepoClick(it.name, getUserLogin()) }
         }
