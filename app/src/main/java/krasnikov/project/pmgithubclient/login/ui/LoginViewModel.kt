@@ -41,33 +41,33 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun navigateToUserInfo() {
-        _navigationEvent.value =
-            NavigationEvent { Navigator.navigateToUserInfo(it, UserProfile.LoggedUser) }
+        _navigationEvent.postValue(NavigationEvent {
+            Navigator.navigateToUserInfo(
+                it,
+                UserProfile.LoggedUser
+            )
+        })
     }
 
     private fun getAccessToken(code: String) {
-        viewModelScope.launch {
-            _content.value = State.Loading
-            when (val result = authHelper.getAccessToken(code)) {
-                is Result.Success -> {
-                    //save token
-                    pref.token = "${result.data.tokenType} ${result.data.accessToken}"
-                    _content.value = State.Content(Unit)
-                    navigateToUserInfo()
-                }
-                is Result.Error -> when (result.exception) {
-                    is NetworkRequestException -> {
-                        _content.value = State.Error(ErrorType.AccessTokenError)
-                    }
-                    else -> {
-                        _content.value = State.Error(ErrorType.UnknownError)
-                    }
-                }
-            }
+        baseViewModelScope.launch() {
+            _content.postValue(State.Loading)
+            val result = authHelper.getAccessToken(code)
+            pref.token = "${result.tokenType} ${result.accessToken}"
+            _content.postValue(State.Content(Unit))
+            navigateToUserInfo()
         }
     }
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
-        TODO("Not yet implemented")
+        super.handleError(throwable, coroutineName)
+        when (throwable) {
+            is NetworkRequestException -> {
+                _content.postValue(State.Error(ErrorType.AccessTokenError))
+            }
+            else -> {
+                _content.postValue(State.Error(ErrorType.UnknownError))
+            }
+        }
     }
 }

@@ -18,12 +18,18 @@ class IssuesViewModel @Inject constructor(
     private val repositoryService: RepositoryService
 ) : BaseViewModel() {
 
-    fun loadIssues(owner: String, repo: String) =
-        object : PagedList<Issue>(viewModelScope) {
+    private lateinit var _issues: PagedList<Issue>
+
+    fun loadIssues(owner: String, repo: String): PagedList<Issue> {
+        _issues = object : PagedList<Issue>(baseViewModelScope) {
             override suspend fun loadNextData(page: Int) = withContext(Dispatchers.IO) {
                 repositoryService.getIssues(owner, repo, page)
             }
         }
+
+        return _issues
+    }
+
 
     fun navigateToIssueInfo(owner: String, repo: String, issue: Issue) {
         _navigationEvent.value =
@@ -31,6 +37,7 @@ class IssuesViewModel @Inject constructor(
     }
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
-        TODO("Not yet implemented")
+        super.handleError(throwable, coroutineName)
+        _issues.notifyError(Exception(throwable))
     }
 }

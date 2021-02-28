@@ -6,6 +6,7 @@ import kotlinx.coroutines.*
 import krasnikov.project.pmgithubclient.app.data.exception.NetworkRequestException
 import krasnikov.project.pmgithubclient.app.data.exception.RequestNotAuthorizedException
 import krasnikov.project.pmgithubclient.app.navigation.NavigationEvent
+import krasnikov.project.pmgithubclient.app.navigation.Navigator
 import krasnikov.project.pmgithubclient.utils.SingleLiveEvent
 
 abstract class BaseViewModel : ViewModel() {
@@ -15,7 +16,11 @@ abstract class BaseViewModel : ViewModel() {
     }
     protected val baseViewModelScope = CoroutineScope(SupervisorJob() + exceptionHandler)
 
-    abstract fun handleError(throwable: Throwable, coroutineName: CoroutineName?)
+    open fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
+        if(throwable is RequestNotAuthorizedException) {
+            _navigationEvent.postValue( NavigationEvent { Navigator.navigateToLogin(it) })
+        }
+    }
 
     protected val _navigationEvent = SingleLiveEvent<NavigationEvent>()
     val navigationEvent

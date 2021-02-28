@@ -11,19 +11,15 @@ import javax.inject.Inject
 
 class UserInfoRepository @Inject constructor(private val userService: UserService) {
 
-    suspend fun getUser(userProfile: UserProfile): Result<User> {
+    suspend fun getUser(userProfile: UserProfile): User {
         return withContext(Dispatchers.IO) {
-            try {
-                when (userProfile) {
-                    is UserProfile.LoggedUser -> {
-                        Result.Success(userService.getLoggedUser())
-                    }
-                    is UserProfile.User -> {
-                        Result.Success(userService.getUser(userProfile.username))
-                    }
+            when (userProfile) {
+                is UserProfile.LoggedUser -> {
+                    userService.getLoggedUser()
                 }
-            } catch (ex: Exception) {
-                Result.Error(ex)
+                is UserProfile.User -> {
+                    userService.getUser(userProfile.username)
+                }
             }
         }
     }

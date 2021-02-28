@@ -40,13 +40,9 @@ class AuthHelper @Inject constructor(private val loginService: LoginService) {
         return uri.getQueryParameter("code")
     }
 
-    suspend fun getAccessToken(code: String): Result<AccessToken> {
+    suspend fun getAccessToken(code: String): AccessToken {
         return withContext(Dispatchers.IO) {
-            try {
-                Result.Success(loginService.getAccessToken(CLIENT_ID, CLIENT_SECRET, code))
-            } catch (ex: Exception) {
-                Result.Error(ex)
-            }
+            loginService.getAccessToken(CLIENT_ID, CLIENT_SECRET, code)
         }
     }
 }

@@ -45,7 +45,7 @@ class ReadMeFragment : BaseFragment<FragmentReadmeBinding, ReadMeViewModel>() {
                 }
                 is State.Error -> {
                     hideLoading()
-                    showToast(R.string.toast_login_error)
+                    showToast(it.error.stringRes)
                 }
             }
         }

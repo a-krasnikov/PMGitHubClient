@@ -42,6 +42,7 @@ class SearchViewModel @Inject constructor(private val searchService: SearchServi
     }
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
+        super.handleError(throwable, coroutineName)
         _contentSearch.value?.notifyError(Exception(throwable))
     }
 }
