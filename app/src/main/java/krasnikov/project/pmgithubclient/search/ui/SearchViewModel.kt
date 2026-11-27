@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import krasnikov.project.pmgithubclient.app.navigation.NavigationEvent
 import krasnikov.project.pmgithubclient.app.navigation.Navigator
@@ -21,18 +22,27 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(private val searchService: SearchService) :
     BaseViewModel() {
 
-    private val _contentSearch = MutableLiveData<PagedList<User>>()
+    private val _contentSearch =
+        MutableLiveData<PaginationData<User>>(PaginationData(emptyList(), PaginationState.Loading))
     val contentSearch
-        get() = _contentSearch as LiveData<PagedList<User>>
+        get() = _contentSearch as LiveData<PaginationData<User>>
 
     fun searchUser(query: String) {
-        if (query.trim().isNotEmpty()) {
-            _contentSearch.value = object : PagedList<User>(baseViewModelScope) {
-                override suspend fun loadNextData(page: Int): List<User> =
-                    withContext(Dispatchers.IO) {
-                        searchService.searchUsers(query, page).items
-                    }
-            }
+        loadNextData(1)
+    }
+
+    fun loadNextData(page: Int) {
+        println("page $page")
+        _contentSearch.value = _contentSearch.value?.stateLoading()
+        baseViewModelScope.launch(Dispatchers.IO) {
+            _contentSearch.postValue(
+                _contentSearch.value?.stateComplete(
+                    searchService.searchUsers(
+                        "vova",
+                        page
+                    ).items
+                )
+            )
         }
     }
 
@@ -43,6 +53,6 @@ class SearchViewModel @Inject constructor(private val searchService: SearchServi
 
     override fun handleError(throwable: Throwable, coroutineName: CoroutineName?) {
         super.handleError(throwable, coroutineName)
-        _contentSearch.value?.notifyError(Exception(throwable))
+        //_contentSearch.value?.notifyError(Exception(throwable))
     }
 }

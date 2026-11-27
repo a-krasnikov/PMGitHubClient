@@ -56,15 +56,17 @@ class SearchFragment : BaseFragment<FragmentSearchBinding, SearchViewModel>() {
         searchUser()
     }
 
+    var page = 2
+
+    val adapte = UsersAdapter { viewModel.loadNextData(page++) }
+
+
     private fun observeContentSearch() {
+        with(binding.rvSearch) {
+            this.adapter = adapte
+        }
         viewModel.contentSearch.observe(viewLifecycleOwner) {
-            with(binding.rvSearch){
-                adapter = UsersAdapter().apply {
-                pagedList = it
-                onItemClickListener = {
-                    viewModel.navigateToUserInfo(it.login)
-                }
-            }}
+            adapte.submitData(it)
         }
     }
 
